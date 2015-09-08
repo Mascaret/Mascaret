@@ -44,14 +44,14 @@ class MascaretHomeScreen(ScreenManager):
         self.add_widget(self.homepage)
 
         self.create_modules_and_tools(module_data)
-                  
-        
+
+
 ##        self.right_panel= RightPanel()
 ##        self.current_screen.screen1_box.add_widget(self.right_panel)
 
 
     def get_module_available(self):
-        
+
                 ###################Looking into Module#####################
 
         #DB CONNECTION
@@ -65,7 +65,7 @@ class MascaretHomeScreen(ScreenManager):
         # METTRE UN BLOC TRY
 
         #Execute la requete SQL, mettre un try
-        global user_logged
+        user_logged = User()
         temporaire = cursor.execute(login_query,(user_logged.login))
 
         #On obtient une matrice
@@ -76,7 +76,7 @@ class MascaretHomeScreen(ScreenManager):
 
         return module_data
 
-    
+
     def create_modules_and_tools(self, module_data):
 
         list_modules = []
@@ -106,7 +106,7 @@ class MascaretHomeScreen(ScreenManager):
                 newmodule.tools_box.add_widget(HPOutilsButton(tools.outil_name))
             self.add_widget(newmodule)
             self.homepage.module_box.add_widget(HPModuleButton(strLinkedModule=mod.module_name))
-    
+
 
 
     def on_mode(self, widget, mode):
@@ -117,7 +117,7 @@ class MascaretHomeScreen(ScreenManager):
                 screen.right_Button.pos_hint = {'x': 1}
                 screen.right_Button.disabled= True
                 try:
-                    screen.get_screen('2').remove_widget(screen.right_panel)    
+                    screen.get_screen('2').remove_widget(screen.right_panel)
                 except:
                     pass
                 try:
@@ -125,7 +125,7 @@ class MascaretHomeScreen(ScreenManager):
                 except:
                     pass
 
-            
+
         else:
             print("narrow")
             for screen in self.screens:
@@ -163,7 +163,5 @@ class RightPanelBtn(Button):
 
 
 class Mascaret(App):
-    global user_logged
-    user_logged = User("claeysremi")
-
+    pass
 Mascaret().run()
