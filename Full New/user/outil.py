@@ -4,7 +4,8 @@ from kivy.uix.relativelayout import RelativeLayout
 from kivy.adapters.listadapter import ListAdapter
 from kivy.uix.listview import ListItemButton, ListView, ListItemLabel
 from kivy.uix.boxlayout import BoxLayout
-
+from entjur import EntJur,ListEntJur
+import pymysql
 
 class HPOutilsButton(HoverButton):
 
@@ -15,7 +16,7 @@ class HPOutilsButton(HoverButton):
         self.background_normal= 'gui/rectbut1.png'
         self.background_color= (100/255, 100/255, 230/255, 1)
         self.linkedoutils = self.define_linked_tool()
-            
+
 
     def on_release(self):
         print(self.linkedoutils_name)
@@ -34,7 +35,7 @@ class HPOutilsButton(HoverButton):
         if self.linkedoutils_name == "Forecast tool":
 
             return Forecast_Tool()
-        
+
         elif self.linkedoutils_name == "Liste employes":
 
             return Liste_Employes()
@@ -116,24 +117,36 @@ class TestList(BoxLayout):
 
     def __init__(self, *args, **kwargs):
         super(TestList, self).__init__()
-        data = [{'text': str(i), 'is_selected': False} for i in range(100)]
+
+
+        #DB CONNECTION
+        db = pymysql.connect("localhost","root","","mascaretdb6")
+        cursor = db.cursor()
+
+        getEntititeJuridique_query = """SELECT *
+                        FROM EntiteJuridique;"""
+        # METTRE UN BLOC TRY
+
+        #Execute la requete SQL, mettre un try
+        temporaire = cursor.execute(getEntititeJuridique_query)
+
+        #On obtient une matrice
+        entite_juridique_data = cursor.fetchall()
+
+        data = ListEntJur()
+        for row in entite_juridique_data:
+            data.append(EntJur(int(row[0]),str(row[1])))
+
+        cursor.close()
+        db.close()
+
 
         args_converter = lambda row_index, rec: {'text': rec['text']}
 
-        list_adapter = ListAdapter(data=data,
-                                   args_converter=args_converter,
+        list_adapter = ListAdapter(data=listtest,
                                    cls=TestListItem,
                                    selection_mode='single',
                                    allow_empty_selection=False)
 
         list_view = ListView(adapter=list_adapter)
         self.add_widget(list_view)
-
-
-
-
-
-
-
-
-

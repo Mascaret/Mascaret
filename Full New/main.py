@@ -55,7 +55,7 @@ class MascaretHomeScreen(ScreenManager):
                 ###################Looking into Module#####################
 
         #DB CONNECTION
-        db = pymysql.connect("localhost","root","","mascaretdb")
+        db = pymysql.connect("localhost","root","","mascaretdb6")
         cursor = db.cursor()
 
         login_query = """SELECT m.intitule, o.intitule
