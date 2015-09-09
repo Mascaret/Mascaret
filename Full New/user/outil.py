@@ -137,6 +137,14 @@ class TestList(BoxLayout):
         for row in entite_juridique_data:
             data.append(EntJur(int(row[0]),str(row[1])))
 
+        for line in data:
+            print(line.ent_id)
+            print(line.ent_name)
+
+        listtest = []
+        for line in data:
+            listtest.append(line.ent_name)
+
         cursor.close()
         db.close()
 
