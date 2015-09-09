@@ -37,8 +37,12 @@ class MascaretLoginScreen(FloatLayout):
         login_query = "SELECT * FROM utilisateur WHERE login =%s AND password = %s"
 
         parameters_query =[user_login,user_password]
-        db.query(login_query,parameters_query)
 
+        try:
+            db.query(login_query,parameters_query)
+            db.commit()
+        except:
+            db.rollback()
 
         login_data = db.db_fetchall()
 

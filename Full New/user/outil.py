@@ -103,7 +103,12 @@ class Formulaire_database_1(RelativeLayout):
         db = MyDB()
         #Execute la requete SQL
         get_all_legal_entities_query = "SELECT *FROM EntiteJuridique;"
-        db.query(get_all_legal_entities_query,[])
+        try:
+            db.query(get_all_legal_entities_query,[])
+            db.commit()
+        except:
+            db.rollback()
+
         #On obtient une matrice
         legal_entities_data = db.db_fetchall()
 
@@ -119,8 +124,12 @@ class Formulaire_database_1(RelativeLayout):
             add_legal_entity_query = "INSERT INTO `entitejuridique` (`intitule`) VALUES (%s) ;"
 
             parameters_query = [str(self.new_legal_entity_box.text)]
-            db.query(add_legal_entity_query,parameters_query)
-            db.commit()
+
+            try:
+                db.query(add_legal_entity_query,parameters_query)
+                db.commit()
+            except:
+                db.rollback()
 
 
 
@@ -146,7 +155,12 @@ class TestList(BoxLayout):
         db = MyDB()
         #Execute la requete SQL
         get_all_legal_entities_query = "SELECT *FROM EntiteJuridique;"
-        db.query(get_all_legal_entities_query,[])
+
+        try:
+            db.query(get_all_legal_entities_query,[])
+            db.commit()
+        except:
+            db.rollback()
         #On obtient une matrice
         legal_entities_data = db.db_fetchall()
 

@@ -7,6 +7,7 @@ class MyDB(object):
     def __init__(self):
         self._db_connection = pymysql.connect('localhost', 'root', '', 'mascaretdb6')
         self._db_cur = self._db_connection.cursor()
+        self._db_connection.autocommit(False)
 
     def query(self, query, params):
         self._db_cur.execute(query, params)
@@ -16,3 +17,9 @@ class MyDB(object):
 
     def __del__(self):
         self._db_connection.close()
+
+    def commit(self):
+        self._db_connection.commit()
+
+    def rollback(self):
+        self._db_connection.rollback()

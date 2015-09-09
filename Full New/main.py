@@ -66,8 +66,12 @@ class MascaretHomeScreen(ScreenManager):
 
         user_logged = User()
         parameters_query =[user_logged.login]
-        db.query(modules_query,parameters_query)
-
+        try:
+            db.query(modules_query,parameters_query)
+            db.commit()
+        except:
+            db.rollback()
+            
         modules_data = db.db_fetchall()
 
         return modules_data
