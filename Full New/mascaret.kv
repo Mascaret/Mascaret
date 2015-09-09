@@ -272,6 +272,7 @@ MascaretRoot:
 
 
 <Formulaire_Location>:
+    ent_jur_listbox: test_list
     new_location_box: new_location
     size: self.size
     pos: self.pos
@@ -287,8 +288,9 @@ MascaretRoot:
             text: "Add"
             on_release: root.send_new_location()
     TestList:
+        id:test_list
         size_hint: 0.3,0.45
         pos_hint:{'x':0.05,'y':0.3}
-    TestList:
+    LocationList:
         size_hint: 0.3,0.45
         pos_hint:{'x':0.5,'y':0.3}

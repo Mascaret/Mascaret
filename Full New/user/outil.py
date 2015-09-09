@@ -5,6 +5,7 @@ from kivy.adapters.listadapter import ListAdapter
 from kivy.uix.listview import ListItemButton, ListView, ListItemLabel
 from kivy.uix.boxlayout import BoxLayout
 from entjur import EntJur,ListEntJur
+from location import Location,ListLocationFromFetch
 import pymysql
 import db_Requests
 from db import MyDB
@@ -135,9 +136,44 @@ class Formulaire_database_1(RelativeLayout):
 
 class Formulaire_Location(RelativeLayout):
     new_location_box = ObjectProperty()
+    ent_jur_listbox = ObjectProperty()
     #Add
     def send_new_location(self):
         print(self.new_location_box.text)
+
+        #Check directement la DB pour plus de surete
+        #DB CONNECTION
+        db = MyDB()
+        #Execute la requete SQL
+
+        get_all_location_query = "SELECT *FROM Location;"
+        try:
+            db.query(get_all_location_query,[])
+            db.commit()
+        except:
+            db.rollback()
+
+        #On obtient une matrice
+        location_data = db.db_fetchall()
+
+        # Liste d'entite Juridique
+        data_location = ListEntJur(location_data)
+        ######################################################################################################
+        location_exist = False
+        for row in data_location:
+            if row.loc_intitule == self.new_location_box.text:
+                print("This Legal Entity already exists")
+                location_exist = True
+        if location_exist == False:
+            add_location_query = "INSERT INTO `location` (`intitule`) VALUES (%s) ;"
+
+            parameters_query = [str(self.new_legal_entity_box.text)]
+
+            try:
+                db.query(add_legal_entity_query,parameters_query)
+                db.commit()
+            except:
+                db.rollback()
 
 
 
@@ -177,6 +213,42 @@ class TestList(BoxLayout):
 
 
         list_adapter = ListAdapter(data=listtest,
+                                   cls=TestListItem,
+                                   selection_mode='single',
+                                   allow_empty_selection=False)
+
+        list_view = ListView(adapter=list_adapter)
+        self.add_widget(list_view)
+
+class LocationList(BoxLayout):
+
+    def __init__(self, *args, **kwargs):
+        super(LocationList, self).__init__()
+
+        #DB CONNECTION
+        db = MyDB()
+        #Execute la requete SQL
+        get_all_location_query = "SELECT * FROM Location;"
+
+        try:
+            db.query(get_all_location_query,[])
+
+            db.commit()
+        except:
+            db.rollback()
+        #On obtient une matrice
+        location_data = db.db_fetchall()
+
+        # Liste d'entite Juridique
+        data_location = ListEntJur(location_data)
+
+        #Liste d'intitule des entites juridiques
+        listlocation = []
+        for line in data_location:
+            listlocation.append(line.loc_intitule)
+
+
+        list_adapter = ListAdapter(data=listlocation,
                                    cls=TestListItem,
                                    selection_mode='single',
                                    allow_empty_selection=False)
