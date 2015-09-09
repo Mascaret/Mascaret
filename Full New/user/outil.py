@@ -125,13 +125,12 @@ class TestList(BoxLayout):
         legal_entities_data = db.db_fetchall()
 
         # Liste d'entite Juridique
-        data = ListEntJur()
-        for row in legal_entities_data:
-            data.append(EntJur(int(row[0]),str(row[1])))
+        data_ent_jur = ListEntJur(legal_entities_data)
+
 
         #Liste d'intitule des entites juridiques
         listtest = []
-        for line in data:
+        for line in data_ent_jur:
             listtest.append(line.ent_name)
 
         db.__del__()

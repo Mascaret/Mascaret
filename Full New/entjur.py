@@ -5,4 +5,7 @@ class EntJur:
         self.ent_name = ent_name
 
 class ListEntJur(list):
-    pass
+
+    def __init__(self,ent_jur_fetched):
+        for row in ent_jur_fetched:
+            self.append(EntJur(int(row[0]),str(row[1])))

@@ -13,7 +13,7 @@ import time
 import pymysql
 from db import MyDB
 from user.user import User
-from user.module import Module, HPModuleButton, HomePage, ModuleGUI
+from user.module import Module, HPModuleButton, HomePage, ModuleGUI,ListModuleFromFetch
 from user.outil import Outil, HPOutilsButton
 from gui.loginscreen import MascaretLoginScreen
 from kivy.uix.screenmanager import ScreenManager, Screen, SwapTransition, FallOutTransition, NoTransition
@@ -74,25 +74,25 @@ class MascaretHomeScreen(ScreenManager):
 
     def create_modules_and_tools(self, modules_data):
 
-        list_modules = []
+        list_modules = ListModuleFromFetch(modules_data)
 
-        #On va chercher les infos
-        for row in modules_data:
-
-            module_appearance = False
-            for mod in list_modules:
-                #Si le module existe deja dans la liste
-                if mod.module_name == str(row[0]):
-                    module_appearance = True
-                    index_mod = list_modules.index(mod)
-                    break
-
-            if module_appearance:
-                list_modules[index_mod].list_outils.append(Outil(str(row[1])))
-            else:
-                temp_module = Module(str(row[0]),[])
-                temp_module.list_outils.append(Outil(str(row[1])))
-                list_modules.append(temp_module)
+        # #On va chercher les infos
+        # for row in modules_data:
+        #
+        #     module_appearance = False
+        #     for mod in list_modules:
+        #         #Si le module existe deja dans la liste
+        #         if mod.module_name == str(row[0]):
+        #             module_appearance = True
+        #             index_mod = list_modules.index(mod)
+        #             break
+        #
+        #     if module_appearance:
+        #         list_modules[index_mod].list_outils.append(Outil(str(row[1])))
+        #     else:
+        #         temp_module = Module(str(row[0]),[])
+        #         temp_module.list_outils.append(Outil(str(row[1])))
+        #         list_modules.append(temp_module)
 
         #On créer la GUI pour chaque Module
         for mod in list_modules:
