@@ -232,6 +232,7 @@ MascaretRoot:
 
 
 <Formulaire_database_1>:
+    list_ent_jur_box:id_testlist
     new_legal_entity_box: new_legal_entity
     size: self.size
     pos: self.pos
@@ -247,6 +248,7 @@ MascaretRoot:
             text: "Add"
             on_release: root.send_new_legal_entity()
     TestList:
+        id:id_testlist
         size_hint: 0.3,0.45
         pos_hint:{'x':0.05,'y':0.3}
 

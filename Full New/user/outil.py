@@ -91,19 +91,45 @@ class Liste_Commandes(RelativeLayout):
 
 class Formulaire_database_1(RelativeLayout):
     new_legal_entity_box = ObjectProperty()
+    list_ent_jur_box = ObjectProperty()
 
     #Add
     def send_new_legal_entity(self):
         print(self.new_legal_entity_box.text)
 
+        #Check directement la DB pour plus de surete
+
+        #DB CONNECTION
+        db = MyDB()
+        #Execute la requete SQL
+        get_all_legal_entities_query = "SELECT *FROM EntiteJuridique;"
+        db.query(get_all_legal_entities_query,[])
+        #On obtient une matrice
+        legal_entities_data = db.db_fetchall()
+
+        # Liste d'entite Juridique
+        data_ent_jur = ListEntJur(legal_entities_data)
+
+        entity_exist = False
+        for row in data_ent_jur:
+            if row.ent_name == self.new_legal_entity_box.text:
+                print("This Legal Entity already exists")
+                entity_exist = True
+        if entity_exist == False:
+            add_legal_entity_query = "INSERT INTO `entitejuridique` (`intitule`) VALUES (%s) ;"
+
+            parameters_query = [str(self.new_legal_entity_box.text)]
+            db.query(add_legal_entity_query,parameters_query)
+            db.commit()
+
 
 
 class Formulaire_Location(RelativeLayout):
     new_location_box = ObjectProperty()
-
     #Add
     def send_new_location(self):
         print(self.new_location_box.text)
+
 
 
 
@@ -133,7 +159,8 @@ class TestList(BoxLayout):
         for line in data_ent_jur:
             listtest.append(line.ent_name)
 
-        db.__del__()
+        self.list_ent_jur = listtest
+
 
         list_adapter = ListAdapter(data=listtest,
                                    cls=TestListItem,
