@@ -144,7 +144,7 @@ class Jur_Ent_List_Item(BoxLayout, ListItemButton):
 
 class Jur_Ent_List(BoxLayout):
     ent_jur_listview= ObjectProperty()
-    
+
     def __init__(self, *args, **kwargs):
         super(Jur_Ent_List, self).__init__()
         self.ent_jur_listview.adapter.data = self.get_ent_jur_list()
@@ -206,21 +206,36 @@ class Formulaire_Location(RelativeLayout):
         location_data = db.db_fetchall()
 
         # Liste de location
-        data_location = ListEntJur(location_data)
+        data_location = ListLocationFromFetch(location_data)
 
         location_exist = False
         for row in data_location:
             if row.loc_intitule == self.new_location_box.text:
                 print("This Location already exists")
                 location_exist = True
-        if location_exist == False:
-            location_listbox.adapter.selection
-            add_location_query = "INSERT INTO `location` (`intitule`) VALUES (%s) ;"
 
-            parameters_query = [str(self.new_location_box.text)]
+        if location_exist == False:
+            idEntJur=ent_jur_listbox.adapter.selection.id
+
+            add_permission_query = "INSERT INTO `Permission`;"
+
+            get_permission_id_query = """SELECT P.idPermission AS idP
+                                    FROM Permission P
+                                    ORDER BY P.idPermission DESC
+                                    LIMIT 1;"""
+
+            add_location_query = """INSERT INTO `Location` (idLocation, intitule, idEntJur)
+                                    VALUES (%d,%s,%d);"""
+
+            parameters_query = [id_permission_data,self.new_location_box.text,idEntJur]
 
             try:
-                db.query(add_location_query, parameters_query)
+                db.query(add_permission_query,[])
+
+                db.query(get_permission_id_query,[])
+                id_permission_data = db.db_fetchone()
+
+                db.query(add_location_query,parameters_query)
                 db.commit()
             except:
                 db.rollback()
@@ -234,7 +249,7 @@ class Location_List_Item(BoxLayout, ListItemButton):
 
 class Location_List(BoxLayout):
     location_listview= ObjectProperty()
-    
+
     def __init__(self, *args, **kwargs):
         super(Location_List, self).__init__()
         self.location_listview.adapter.data = self.get_location_list()
@@ -271,4 +286,3 @@ class Location_List(BoxLayout):
             list_location.append(line.loc_intitule)
 
         return list_location
-
