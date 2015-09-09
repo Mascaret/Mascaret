@@ -59,6 +59,10 @@ class HPOutilsButton(HoverButton):
 
             return Formulaire_Ent_Jur()
 
+        elif self.linkedoutils_name == "Formulaire location":
+
+            return Formulaire_Location()
+
 
 
 
@@ -86,6 +90,7 @@ class Creation_Facture(RelativeLayout):
 
 class Liste_Commandes(RelativeLayout):
     pass
+
 
 
 
@@ -132,14 +137,9 @@ class Formulaire_Ent_Jur(RelativeLayout):
                 db.rollback()
 
 
-
-
-
-
 class Jur_Ent_List_Item(BoxLayout, ListItemButton):
     id_jur_ent = StringProperty()
     name_jur_ent = StringProperty()
-
 
 
 class Jur_Ent_List(BoxLayout):
@@ -155,7 +155,6 @@ class Jur_Ent_List(BoxLayout):
             "name_jur_ent": ""
         }
         return result
-            
 
     def get_ent_jur_list(self):
 
@@ -182,4 +181,94 @@ class Jur_Ent_List(BoxLayout):
             list_ent_jur.append(line.ent_name)
 
         return list_ent_jur
+
+
+class Formulaire_Location(RelativeLayout):
+    new_location_box = ObjectProperty()
+    location_listbox = ObjectProperty()
+    #Add
+    def send_new_location(self):
+        print(self.new_location_box.text)
+
+        #Check directement la DB pour plus de surete
+        #DB CONNECTION
+        db = MyDB()
+        #Execute la requete SQL
+
+        get_all_location_query = "SELECT *FROM Location;"
+        try:
+            db.query(get_all_location_query,[])
+            db.commit()
+        except:
+            db.rollback()
+
+        #On obtient une matrice
+        location_data = db.db_fetchall()
+
+        # Liste de location
+        data_location = ListEntJur(location_data)
+
+        location_exist = False
+        for row in data_location:
+            if row.loc_intitule == self.new_location_box.text:
+                print("This Location already exists")
+                location_exist = True
+        if location_exist == False:
+            location_listbox.adapter.selection
+            add_location_query = "INSERT INTO `location` (`intitule`) VALUES (%s) ;"
+
+            parameters_query = [str(self.new_location_box.text)]
+
+            try:
+                db.query(add_location_query, parameters_query)
+                db.commit()
+            except:
+                db.rollback()
+
+
+
+class Location_List_Item(BoxLayout, ListItemButton):
+    id_location = StringProperty()
+    name_location = StringProperty()
+
+
+class Location_List(BoxLayout):
+    location_listview= ObjectProperty()
+    
+    def __init__(self, *args, **kwargs):
+        super(Location_List, self).__init__()
+        self.location_listview.adapter.data = self.get_location_list()
+
+    def location_converter(self, index, location_id):
+        result = {
+            "id_jur_ent": ent_jur_id,
+            "name_jur_ent": ""
+        }
+        return result
+
+    def get_location_list(self):
+
+        #DB CONNECTION
+        db = MyDB()
+        #Execute la requete SQL
+        get_all_location_query = "SELECT * FROM Location;"
+
+        try:
+            db.query(get_all_location_query,[])
+
+            db.commit()
+        except:
+            db.rollback()
+        #On obtient une matrice
+        location_data = db.db_fetchall()
+
+        # Liste d'entite Juridique
+        data_location = ListEntJur(location_data)
+
+        #Liste d'intitule des entites juridiques
+        list_location = []
+        for line in data_location:
+            list_location.append(line.loc_intitule)
+
+        return list_location
 
