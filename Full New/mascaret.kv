@@ -237,10 +237,9 @@ MascaretRoot:
     pos: self.pos
     BoxLayout:
         spacing: "5dp"
-        size_hint: None, None
-        pos_hint:{'x':0.1,'y':0.5}
-        width: "300dp"
-        height: "40dp"
+        size_hint: 0.3, None
+        pos_hint:{'x':0.05,'y':0.8}
+        height: "30dp"
         TextInput:
             id: new_legal_entity
         Button:
@@ -248,8 +247,8 @@ MascaretRoot:
             text: "Add"
             on_release: root.send_new_legal_entity()
     TestList:
-        size_hint: 0.3,0.5
-        pos_hint:{'x':0.5,'y':0.3}
+        size_hint: 0.3,0.45
+        pos_hint:{'x':0.05,'y':0.3}
 
 
 
@@ -267,3 +266,27 @@ MascaretRoot:
     halign: 'justify'
     valign: 'top'
     font_name: 'OCRAEXT.TTF'
+
+
+
+<Formulaire_Location>:
+    new_location_box: new_location
+    size: self.size
+    pos: self.pos
+    BoxLayout:
+        spacing: "5dp"
+        size_hint: 0.3, None
+        pos_hint:{'x':0.05,'y':0.8}
+        height: "30dp"
+        TextInput:
+            id: new_location
+        Button:
+            size_hint: 0.5,1
+            text: "Add"
+            on_release: root.send_new_location()
+    TestList:
+        size_hint: 0.3,0.45
+        pos_hint:{'x':0.05,'y':0.3}
+    TestList:
+        size_hint: 0.3,0.45
+        pos_hint:{'x':0.5,'y':0.3}

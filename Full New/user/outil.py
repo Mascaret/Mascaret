@@ -59,6 +59,11 @@ class HPOutilsButton(HoverButton):
             return Formulaire_database_1()
 
 
+        elif self.linkedoutils_name == "Formulaire location":
+
+            return Formulaire_Location()
+
+
 
 
 
@@ -93,7 +98,12 @@ class Formulaire_database_1(RelativeLayout):
 
 
 
+class Formulaire_Location(RelativeLayout):
+    new_location_box = ObjectProperty()
 
+    #Add
+    def send_new_location(self):
+        print(self.new_location_box.text)
 
 
 
@@ -101,22 +111,6 @@ class TestListItem(ListItemButton):
     pass
 
 class TestList(BoxLayout):
-##    list_view = ObjectProperty()
-##
-##    def force_list_view_update(self):
-##        self.list_view.adapter.update_for_new_data()
-##        self.list_view._trigger_reset_populate()
-##
-##    def roster_converter(self, row_index, rec):
-##        return {'text': rec['text'],'size_hint_y': None, 'height': 25}
-##
-##    ListAdapter(data=[{'text': str(i), 'is_selected': False} for i in range(100)],
-##                   cls=lb, args_converter=root.roster_converter)
-##
-##    self.adapter = ListAdapter(data=[{'text': str(i), 'is_selected': False} for i in range(100)],
-##                           args_converter=self.roster_converter,
-##                           propagate_selection_to_data=True,
-##                           cls=ListItemButton)
 
     def __init__(self, *args, **kwargs):
         super(TestList, self).__init__()
