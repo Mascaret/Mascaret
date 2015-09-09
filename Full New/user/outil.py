@@ -133,23 +133,18 @@ class TestList(BoxLayout):
         #On obtient une matrice
         entite_juridique_data = cursor.fetchall()
 
+        # Liste d'entite Juridique
         data = ListEntJur()
         for row in entite_juridique_data:
             data.append(EntJur(int(row[0]),str(row[1])))
 
-        for line in data:
-            print(line.ent_id)
-            print(line.ent_name)
-
+        #Liste d'intitule des entites juridiques
         listtest = []
         for line in data:
             listtest.append(line.ent_name)
 
         cursor.close()
         db.close()
-
-
-        args_converter = lambda row_index, rec: {'text': rec['text']}
 
         list_adapter = ListAdapter(data=listtest,
                                    cls=TestListItem,
