@@ -11,6 +11,7 @@ from kivy.uix.label import Label
 from kivy.uix.button import Button
 import time
 import pymysql
+from db import MyDB
 from user.user import User
 from user.module import Module, HPModuleButton, HomePage, ModuleGUI
 from user.outil import Outil, HPOutilsButton
@@ -55,34 +56,28 @@ class MascaretHomeScreen(ScreenManager):
                 ###################Looking into Module#####################
 
         #DB CONNECTION
-        db = pymysql.connect("localhost","root","","mascaretdb6")
-        cursor = db.cursor()
 
-        login_query = """SELECT m.intitule, o.intitule
+        db = MyDB()
+
+        modules_query = """SELECT m.intitule, o.intitule
                         FROM module AS m , outil AS o, utilisateur AS u, utilisateuroutil AS uo
                         WHERE u.login =%s AND uo.idUtilisateur = u.idUtilisateur
                         AND uo.idOutil = o.idOutil AND o.idModule = m.idModule"""
-        # METTRE UN BLOC TRY
 
-        #Execute la requete SQL, mettre un try
         user_logged = User()
-        temporaire = cursor.execute(login_query,(user_logged.login))
+        parameters_query =[user_logged.login]
+        db.query(modules_query,parameters_query)
 
-        #On obtient une matrice
-        module_data = cursor.fetchall()
+        modules_data = db.db_fetchall()
 
-        cursor.close()
-        db.close()
+        return modules_data
 
-        return module_data
-
-
-    def create_modules_and_tools(self, module_data):
+    def create_modules_and_tools(self, modules_data):
 
         list_modules = []
 
         #On va chercher les infos
-        for row in module_data:
+        for row in modules_data:
 
             module_appearance = False
             for mod in list_modules:

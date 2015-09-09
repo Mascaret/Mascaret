@@ -4,6 +4,7 @@ from kivy.graphics import Color
 from kivy.properties import ObjectProperty, StringProperty
 from user.user import User
 import pymysql
+from db import MyDB
 from kivy.animation import Animation
 
 
@@ -29,23 +30,20 @@ class MascaretLoginScreen(FloatLayout):
         user_login = self.login_box.text
         user_password = self.password_box.text
 
-        #######################################
-        # DB CONNECTION
 
-        db = pymysql.connect("localhost","root","","mascaretdb")
-        cursor = db.cursor()
+        # DB CONNECTION
+        db = MyDB()
 
         login_query = "SELECT * FROM utilisateur WHERE login =%s AND password = %s"
-        #a l'avenir capter une exception TMTC la security
 
-        login_data = cursor.execute(login_query,(user_login,user_password))
-        cursor.close()
-        db.close()
+        parameters_query =[user_login,user_password]
+        db.query(login_query,parameters_query)
 
-        ########################################
+
+        login_data = db.db_fetchall()
 
         if login_data:
-            global user_logged
+
             user_logged = User(user_login)
             self.dispatch('on_right_id')
 

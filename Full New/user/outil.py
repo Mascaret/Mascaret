@@ -6,6 +6,8 @@ from kivy.uix.listview import ListItemButton, ListView, ListItemLabel
 from kivy.uix.boxlayout import BoxLayout
 from entjur import EntJur,ListEntJur
 import pymysql
+import db_Requests
+from db import MyDB
 
 class HPOutilsButton(HoverButton):
 
@@ -85,6 +87,7 @@ class Liste_Commandes(RelativeLayout):
 class Formulaire_database_1(RelativeLayout):
     new_legal_entity_box = ObjectProperty()
 
+    #Add
     def send_new_legal_entity(self):
         print(self.new_legal_entity_box.text)
 
@@ -120,22 +123,16 @@ class TestList(BoxLayout):
 
 
         #DB CONNECTION
-        db = pymysql.connect("localhost","root","","mascaretdb6")
-        cursor = db.cursor()
-
-        getEntititeJuridique_query = """SELECT *
-                        FROM EntiteJuridique;"""
-        # METTRE UN BLOC TRY
-
-        #Execute la requete SQL, mettre un try
-        temporaire = cursor.execute(getEntititeJuridique_query)
-
+        db = MyDB()
+        #Execute la requete SQL
+        get_all_legal_entities_query = "SELECT *FROM EntiteJuridique;"
+        db.query(get_all_legal_entities_query,[])
         #On obtient une matrice
-        entite_juridique_data = cursor.fetchall()
+        legal_entities_data = db.db_fetchall()
 
         # Liste d'entite Juridique
         data = ListEntJur()
-        for row in entite_juridique_data:
+        for row in legal_entities_data:
             data.append(EntJur(int(row[0]),str(row[1])))
 
         #Liste d'intitule des entites juridiques
@@ -143,8 +140,7 @@ class TestList(BoxLayout):
         for line in data:
             listtest.append(line.ent_name)
 
-        cursor.close()
-        db.close()
+        db.__del__()
 
         list_adapter = ListAdapter(data=listtest,
                                    cls=TestListItem,
