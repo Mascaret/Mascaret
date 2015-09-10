@@ -6,7 +6,7 @@ class Location:
         self.loc_ent_jur = loc_ent_jur
 
     def delete():
-
+        pass 
 class ListLocationFromFetch(list):
 
     def __init__(self,fetch_result):

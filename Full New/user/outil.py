@@ -7,7 +7,6 @@ from kivy.uix.boxlayout import BoxLayout
 from entjur import EntJur,ListEntJur
 from location import Location,ListLocationFromFetch
 import pymysql
-import db_Requests
 from db import MyDB
 
 class HPOutilsButton(HoverButton):
