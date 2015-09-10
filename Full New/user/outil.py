@@ -1,13 +1,13 @@
 from gui.hoverclasses import HoverButton
 from kivy.properties import ObjectProperty, StringProperty
 from kivy.uix.relativelayout import RelativeLayout
+from kivy.uix.floatlayout import FloatLayout
 from kivy.adapters.listadapter import ListAdapter
 from kivy.uix.listview import ListItemButton, ListView, ListItemLabel
 from kivy.uix.boxlayout import BoxLayout
 from entjur import EntJur,ListEntJur
 from location import Location,ListLocationFromFetch
 import pymysql
-import db_Requests
 from db import MyDB
 
 class HPOutilsButton(HoverButton):
@@ -55,7 +55,7 @@ class HPOutilsButton(HoverButton):
 
             return Liste_Commandes()
 
-        elif self.linkedoutils_name == "Formulaire dtb 1":
+        elif self.linkedoutils_name == "Formulaire Ent_Jur":
 
             return Formulaire_Ent_Jur()
 
@@ -94,7 +94,7 @@ class Liste_Commandes(RelativeLayout):
 
 
 
-class Formulaire_Ent_Jur(RelativeLayout):
+class Formulaire_Ent_Jur(FloatLayout):
     new_legal_entity_box = ObjectProperty()
     list_ent_jur_box = ObjectProperty()
 
@@ -102,24 +102,15 @@ class Formulaire_Ent_Jur(RelativeLayout):
     def send_new_legal_entity(self):
         print(self.new_legal_entity_box.text)
 
-        #Check directement la DB pour plus de surete
+        data_ent_jur = self.list_ent_jur_box.get_ent_jur_list()
+
+        self.check_existence_of_new_ent_jur_and_add_it(data_ent_jur)
+
+    def check_existence_of_new_ent_jur_and_add_it(self, data_ent_jur):
 
         #DB CONNECTION
         db = MyDB()
-        #Execute la requete SQL
-        get_all_legal_entities_query = "SELECT *FROM EntiteJuridique;"
-        try:
-            db.query(get_all_legal_entities_query,[])
-            db.commit()
-        except:
-            db.rollback()
-
-        #On obtient une matrice
-        legal_entities_data = db.db_fetchall()
-
-        # Liste d'entite Juridique
-        data_ent_jur = ListEntJur(legal_entities_data)
-
+        
         entity_exist = False
         for row in data_ent_jur:
             if row.ent_name == self.new_legal_entity_box.text:
@@ -136,6 +127,9 @@ class Formulaire_Ent_Jur(RelativeLayout):
             except:
                 db.rollback()
 
+            self.new_legal_entity_box.text = ""
+            self.list_ent_jur_box.ent_jur_listview.adapter.data = self.list_ent_jur_box.get_ent_jur_list()
+
 
 class Jur_Ent_List_Item(BoxLayout, ListItemButton):
     id_jur_ent = StringProperty()
@@ -143,16 +137,12 @@ class Jur_Ent_List_Item(BoxLayout, ListItemButton):
 
 
 class Jur_Ent_List(BoxLayout):
-    ent_jur_listview= ObjectProperty()
+    ent_jur_listview = ObjectProperty()
 
-    def __init__(self, *args, **kwargs):
-        super(Jur_Ent_List, self).__init__()
-        self.ent_jur_listview.adapter.data = self.get_ent_jur_list()
-
-    def ent_jur_converter(self, index, ent_jur_id):
+    def ent_jur_converter(self, index, ent_jur):
         result = {
-            "id_jur_ent": ent_jur_id,
-            "name_jur_ent": ""
+            "id_jur_ent": str(ent_jur.ent_id),
+            "name_jur_ent": str(ent_jur.ent_name)
         }
         return result
 
@@ -173,41 +163,31 @@ class Jur_Ent_List(BoxLayout):
 
         # Liste d'entite Juridique
         data_ent_jur = ListEntJur(legal_entities_data)
+        
+        return data_ent_jur
 
 
-        #Liste d'intitule des entites juridiques
-        list_ent_jur = []
-        for line in data_ent_jur:
-            list_ent_jur.append(line.ent_name)
-
-        return list_ent_jur
 
 
 class Formulaire_Location(RelativeLayout):
     new_location_box = ObjectProperty()
     location_listbox = ObjectProperty()
+    ent_jur_listbox = ObjectProperty()
+
     #Add
     def send_new_location(self):
         print(self.new_location_box.text)
 
-        #Check directement la DB pour plus de surete
+        data_location = self.location_listbox.get_location_list()
+
+        self.check_existence_of_new_location_and_add_it(data_location)
+
+
+    def check_existence_of_new_location_and_add_it(self, data_location):
+
         #DB CONNECTION
         db = MyDB()
-        #Execute la requete SQL
-
-        get_all_location_query = "SELECT *FROM Location;"
-        try:
-            db.query(get_all_location_query,[])
-            db.commit()
-        except:
-            db.rollback()
-
-        #On obtient une matrice
-        location_data = db.db_fetchall()
-
-        # Liste de location
-        data_location = ListLocationFromFetch(location_data)
-
+        
         location_exist = False
         for row in data_location:
             if row.loc_intitule == self.new_location_box.text:
@@ -215,7 +195,9 @@ class Formulaire_Location(RelativeLayout):
                 location_exist = True
 
         if location_exist == False:
-            idEntJur=ent_jur_listbox.adapter.selection.id
+            
+            #selected_ent_jur = 
+            idEntJur= self.ent_jur_listbox.ent_jur_listview.adapter.selection[0].id_jur_ent
 
             add_permission_query = "INSERT INTO `Permission`;"
 
@@ -227,37 +209,37 @@ class Formulaire_Location(RelativeLayout):
             add_location_query = """INSERT INTO `Location` (idLocation, intitule, idEntJur)
                                     VALUES (%d,%s,%d);"""
 
+            #try:
+            db.query(add_permission_query,[])
+
+            db.query(get_permission_id_query,[])
+            id_permission_data = db.db_fetchone()
+
             parameters_query = [id_permission_data,self.new_location_box.text,idEntJur]
+            
+            db.query(add_location_query,parameters_query)
+            db.commit()
+            #except:
+                #db.rollback()
 
-            try:
-                db.query(add_permission_query,[])
-
-                db.query(get_permission_id_query,[])
-                id_permission_data = db.db_fetchone()
-
-                db.query(add_location_query,parameters_query)
-                db.commit()
-            except:
-                db.rollback()
-
+            self.new_location_box.text = ""
+            self.location_listbox.location_listview.adapter.data = self.location_listbox.get_location_list()
 
 
 class Location_List_Item(BoxLayout, ListItemButton):
     id_location = StringProperty()
     name_location = StringProperty()
+    id_ent_jur_cor = StringProperty()
 
 
 class Location_List(BoxLayout):
     location_listview= ObjectProperty()
 
-    def __init__(self, *args, **kwargs):
-        super(Location_List, self).__init__()
-        self.location_listview.adapter.data = self.get_location_list()
-
-    def location_converter(self, index, location_id):
+    def location_converter(self, index, location):
         result = {
-            "id_jur_ent": ent_jur_id,
-            "name_jur_ent": ""
+            "id_location": location.loc_id,
+            "name_location": location.loc_intitule,
+            "id_ent_jur_cor": location.loc_ent_jur
         }
         return result
 
@@ -278,11 +260,6 @@ class Location_List(BoxLayout):
         location_data = db.db_fetchall()
 
         # Liste d'entite Juridique
-        data_location = ListEntJur(location_data)
-
-        #Liste d'intitule des entites juridiques
-        list_location = []
-        for line in data_location:
-            list_location.append(line.loc_intitule)
-
-        return list_location
+        data_location = ListLocationFromFetch(location_data)
+        
+        return data_location
