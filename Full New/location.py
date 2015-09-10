@@ -6,7 +6,8 @@ class Location:
         self.loc_ent_jur = loc_ent_jur
 
     def delete():
-        pass
+        pass 
+
 
 class ListLocationFromFetch(list):
 

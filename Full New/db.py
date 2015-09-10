@@ -5,7 +5,7 @@ class MyDB(object):
     _db_cur = None
 
     def __init__(self):
-        self._db_connection = pymysql.connect('localhost', 'root', '', 'mascaretdb')
+        self._db_connection = pymysql.connect('localhost', 'root', '', 'mascaretdb6')
         self._db_cur = self._db_connection.cursor()
         self._db_connection.autocommit(False)
 
