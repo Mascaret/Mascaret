@@ -166,6 +166,7 @@ class Formulaire_Location(RelativeLayout):
                 location_exist = True
         if location_exist == False:
             ent_jur_listbox.adapter.selection
+
             add_location_query = "INSERT INTO `location` (`intitule`) VALUES (%s) ;"
 
             parameters_query = [str(self.new_legal_entity_box.text)]
