@@ -197,27 +197,24 @@ class Formulaire_Location(RelativeLayout):
         if location_exist == False:
 
             #selected_ent_jur =
-            idEntJur= self.ent_jur_listbox.ent_jur_listview.adapter.selection[0].id_jur_ent
-            print(idEntJur)
+            try:
+                idEntJur= self.ent_jur_listbox.ent_jur_listview.adapter.selection[0].id_jur_ent
+                print(idEntJur)
+                add_permission_query = "INSERT INTO `permission` (`idPermission`) VALUES (NULL) ;"
+                db.query(add_permission_query,[])
 
-            add_permission_query = "INSERT INTO `permission` (`idPermission`) VALUES (NULL) ;"
-            db.query(add_permission_query,[])
+                get_idpermission_query = "SELECT P.idPermission AS Id FROM permission P ORDER BY P.idPermission DESC LIMIT 1;"
+                db.query(get_idpermission_query,[])
+                get_permission_id_data = db.db_fetchall()
 
-            get_idpermission_query = "SELECT P.idPermission AS Id FROM permission P ORDER BY P.idPermission DESC LIMIT 1;"
-            db.query(get_idpermission_query,[])
-            get_permission_id_data = db.db_fetchall()
-            print(get_permission_id_data[0][0])
+                add_location_query = """INSERT INTO `location` (idLoc, intitule, idEntJur)
+                                        VALUES (%s,%s,%s);"""
 
-            add_location_query = """INSERT INTO `location` (idLocation, intitule, idEntJur)
-                                    VALUES (%d,%s,%d);"""
-            parameters_query = [int(get_permission_id_data[0][0]),self.new_location_box.text,int(idEntJur)]
-            db.query(add_location_query,parameters_query)
-
-            #try:
-
-            db.commit()
-            #except:
-                #db.rollback()
+                parameters_query = [gpid,self.new_location_box.text,iej]
+                db.query(add_location_query,parameters_query)
+                db.commit()
+            except:
+                db.rollback()
 
             self.new_location_box.text = ""
             self.location_listbox.location_listview.adapter.data = self.location_listbox.get_location_list()
@@ -236,7 +233,7 @@ class Location_List(BoxLayout):
         result = {
             "id_location": location.loc_id,
             "name_location": location.loc_intitule,
-            "id_ent_jur_cor": location.loc_ent_jur
+            "id_ent_jur_cor": (location.loc_ent_jur)
         }
         return result
 
