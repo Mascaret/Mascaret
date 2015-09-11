@@ -1,5 +1,6 @@
 #:import la kivy.adapters.listadapter
 #:import ok user.outil
+#:import md gui.menuderoulant
 
 MascaretRoot:
 
@@ -354,3 +355,43 @@ MascaretRoot:
         id:ent_jur_list
         size_hint: 0.3,0.45
         pos_hint:{'x':0.45,'y':0.3}
+    Bouton_deroulant_Ent_jur:
+##        pos_hint:{'x':0.75,'y':0.3}
+        
+
+
+###########################Menu Deroulant######################################
+
+<Bouton_Deroulant>:
+    size_hint: None,None
+    width: "200dp"
+    height: "30dp"
+    pos_hint: {"x":0.75,"y":0.8}
+    text: "Select"
+    on_release: self.MenuDeroulant()
+
+<Liste_Deroulante>:
+    background_color: 0,0,0,0
+    ent_jur_listview: listview
+    size_hint: None, None
+    ListView:
+        id: listview
+        adapter:
+            la.ListAdapter(data= [],
+            cls=md.Liste_Deroulante_Item,
+            args_converter=root.ent_jur_converter,selection_mode='single',
+            allow_empty_selection=False)
+
+<Liste_Deroulante_Item>:
+    size_hint_y: None
+    height: "30dp"
+    selected_color: (0.1, 0.1, 0.1, 0.1)
+    deselected_color: (1,1,1,1)
+    Label:
+        text: root.name_jur_ent
+        italic: True
+        font_size: '20dp'
+        text_size: self.size
+        halign: 'left'
+        valign: 'top'
+        font_name: 'OCRAEXT.TTF'

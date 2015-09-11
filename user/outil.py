@@ -9,6 +9,7 @@ from entjur import EntJur,ListEntJur
 from location import Location,ListLocationFromFetch
 import pymysql
 from db import MyDB
+from gui.menuderoulant import Bouton_Deroulant
 
 class HPOutilsButton(HoverButton):
 
@@ -263,3 +264,25 @@ class Location_List(BoxLayout):
         data_location = ListLocationFromFetch(location_data)
         
         return data_location
+
+class Bouton_deroulant_Ent_jur(Bouton_Deroulant):
+
+    def get_ent_jur_list(self):
+        
+        #DB CONNECTION
+        db = MyDB()
+        #Execute la requete SQL
+        get_all_legal_entities_query = "SELECT *FROM EntiteJuridique;"
+
+        try:
+            db.query(get_all_legal_entities_query,[])
+            db.commit()
+        except:
+            db.rollback()
+        #On obtient une matrice
+        legal_entities_data = db.db_fetchall()
+
+        # Liste d'entite Juridique
+        data_ent_jur = ListEntJur(legal_entities_data)
+        
+        return data_ent_jur
