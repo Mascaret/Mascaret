@@ -1,7 +1,4 @@
 #Settings
-
-
-
 Mode = "wide"
     
 

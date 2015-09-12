@@ -14,13 +14,13 @@ class Menu_Deroulant(Button):
     
     def MenuDeroulant(self):
         print(setts.Mode)
-        liste = self.get_object_list()
+        liste = self.get_location_list()
         self.modal = Liste_Deroulante()
         self.modal.width = self.width
         self.modal.pos_hint = {'x': 0.5 + 0.5 * self.pos_hint['x'], 'top': self.pos_hint['y']}
-        self.modal.object_listview.adapter.data=liste
+        self.modal.ent_jur_listview.adapter.data=liste
         self.modal.height= str(min(400,len(liste) * 30)) + "dp"
-        self.modal.object_listview.adapter.bind(on_selection_change=self.select_change)
+        self.modal.ent_jur_listview.adapter.bind(on_selection_change=self.select_change)
         self.modal.open()
 
     def select_change(self,la):
@@ -31,17 +31,18 @@ class Menu_Deroulant(Button):
         print(self.id_object)
         self.modal.dismiss()
 
-    def get_object_list(self):
+    def get_location_list(self):
         return ["GRE", "FRE"]
 
 #Class of a list menu inside a modal view
 class Liste_Deroulante(ModalView):
-    object_listview = ObjectProperty()
+    ent_listview = ObjectProperty()
 
-    def object_converter(self, index, objet):
+    def location_converter(self, index, objet):
         result = {
-            "id_object": str(objet.Id),
-            "name_object": str(objet.intitule)
+            "id_object": str(objet.loc_id),
+            "name_object": str(objet.loc_intitule),
+            "id_cor1_object": str(objet.loc_ent_jur)
         }
         return result
 

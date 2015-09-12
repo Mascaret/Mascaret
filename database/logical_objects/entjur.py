@@ -1,9 +1,9 @@
 #Class of the object Legal Entity
 class EntJur:
 
-    def __init__(self,ent_id,ent_name):
-        self.ent_id = ent_id
-        self.ent_name = ent_name
+    def __init__(self,Id,intitule):
+        self.Id = Id
+        self.intitule = intitule
         
 #Class of the list of all the objects Legal Entity
 class ListEntJur(list):

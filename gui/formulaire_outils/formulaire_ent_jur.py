@@ -29,7 +29,7 @@ class Formulaire_Ent_Jur(FloatLayout):
         
         entity_exist = False
         for row in data_ent_jur:
-            if row.ent_name == self.new_legal_entity_box.text:
+            if row.intitule == self.new_legal_entity_box.text:
                 print("This Legal Entity already exists")
                 entity_exist = True
         if entity_exist == False:
@@ -57,8 +57,8 @@ class Jur_Ent_List(BoxLayout):
 
     def ent_jur_converter(self, index, ent_jur):
         result = {
-            "id_jur_ent": str(ent_jur.ent_id),
-            "name_jur_ent": str(ent_jur.ent_name)
+            "id_jur_ent": str(ent_jur.Id),
+            "name_jur_ent": str(ent_jur.intitule)
         }
         return result
 

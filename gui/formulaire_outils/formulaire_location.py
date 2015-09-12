@@ -33,7 +33,7 @@ class Formulaire_Location(RelativeLayout):
         
         location_exist = False
         for row in data_location:
-            if row.loc_intitule == self.new_location_box.text:
+            if row.intitule == self.new_location_box.text:
                 print("This Location already exists")
                 location_exist = True
 
@@ -73,9 +73,9 @@ class Location_List(BoxLayout):
 
     def location_converter(self, index, location):
         result = {
-            "id_location": str(location.loc_id),
-            "name_location": str(location.loc_intitule),
-            "id_ent_jur_cor": str(location.loc_ent_jur)
+            "id_location": str(location.Id),
+            "name_location": str(location.intitule),
+            "id_ent_jur_cor": str(location.id_cor1)
         }
         return result
 
@@ -103,7 +103,7 @@ class Location_List(BoxLayout):
 #Class of a list of Ent Jur trigered by clickiing on a button
 class Menu_Deroulant_Ent_Jur(Menu_Deroulant):
 
-    def get_ent_jur_list(self):
+    def get_object_list(self):
         
         #DB CONNECTION
         db = MyDB()
