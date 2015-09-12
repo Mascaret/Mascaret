@@ -22,7 +22,7 @@ class MascaretLoginScreen(FloatLayout):
     def login(self):
         animation = Animation(x=self.login_area.x - self.login_area.width, duration=0.8)
         animation.start(self.login_area)
-        self.pan_screen= Image(source= "gui/login_screen/loading", keep_ratio= False, allow_stretch= True,
+        self.pan_screen= Image(source= "gui/login_screen/loading.jpg", keep_ratio= False, allow_stretch= True,
                         color= (1, 1, 1, 0.1))
         self.add_widget(self.pan_screen)
         animation.bind(on_complete=self.check_login)

@@ -5,10 +5,11 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.button import Button
 from kivy.uix.screenmanager import ScreenManager, NoTransition
 from kivy.app import App
-from kivy.properties import ObjectProperty, StringProperty
+from kivy.properties import ObjectProperty, StringProperty, IntegerProperty
 import time
 import pymysql
 #Personnal Libs imports
+import config.settings as setts
 from database.db import MyDB
 from user.user import User
 from gui.home_screen.hp_outils_buttons import HPOutilsButton
@@ -33,7 +34,7 @@ class MascaretRoot(FloatLayout):
 
 #Class of the homescreen
 class MascaretHomeScreen(ScreenManager):
-    mode = StringProperty("wide")
+    mode = IntegerProperty(setts.Mode)
 
     def __init__(self,**kwargs):
         super(MascaretHomeScreen, self).__init__()
@@ -109,8 +110,10 @@ class MascaretHomeScreen(ScreenManager):
 
 
     def on_mode(self, widget, mode):
-        if mode == "wide" :
+        if mode == 1 :
             print("wide")
+            setts.Mode = "wide"
+            print("setts: " + setts.Mode)
             for screen in self.screens:
                 print(screen.name)
                 screen.right_Button.pos_hint = {'x': 1}
@@ -127,6 +130,8 @@ class MascaretHomeScreen(ScreenManager):
 
         else:
             print("narrow")
+            setts.Mode = "narrow"
+            print("setts: " + setts.Mode)
             for screen in self.screens:
                 print(screen.name)
                 screen.right_Button.pos_hint = {'x': 0.93}
@@ -157,5 +162,5 @@ class RightPanelBtn(Button):
 #App
 class Mascaret(App):
     pass
-
+    
 Mascaret().run()

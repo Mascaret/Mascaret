@@ -4,6 +4,8 @@ from kivy.uix.modalview import ModalView
 from kivy.uix.button import Button
 from kivy.uix.listview import ListItemButton
 from kivy.properties import ObjectProperty, StringProperty
+#Personnal Libs imports
+import config.settings
 
 #Class creating a list menu triggered when clicking on a button
 class Menu_Deroulant(Button):
@@ -11,6 +13,7 @@ class Menu_Deroulant(Button):
     name_object= StringProperty()
     
     def MenuDeroulant(self):
+        print(settings.Mode)
         liste = self.get_ent_jur_list()
         self.modal = Liste_Deroulante()
         self.modal.width = self.width
