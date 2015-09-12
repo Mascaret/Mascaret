@@ -1,5 +1,5 @@
-#Class of the object Location
-class Location:
+#Class of the object Service
+class Service:
 
     def __init__(self,Id,intitule,id_cor1):
         self.Id = Id
@@ -9,9 +9,9 @@ class Location:
     def delete():
         pass 
 
-#Class of the list of all the objects Location
-class ListLocationFromFetch(list):
+#Class of the list of all the objects sercices
+class ListServiceFromFetch(list):
 
     def __init__(self,fetch_result):
         for row in fetch_result:
-            self.append(Location(row[0],row[1],row[2]))
+            self.append(Service(row[0],row[2],row[1]))

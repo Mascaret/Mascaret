@@ -9,6 +9,8 @@ from gui.formulaire_outils.liste_employes import Liste_Employes
 from gui.formulaire_outils.cjsl01 import CJSL01
 from gui.formulaire_outils.creation_facture import Creation_Facture
 from gui.formulaire_outils.liste_commandes import Liste_Commandes
+from gui.formulaire_outils.formulaire_center import Formulaire_Center
+from gui.formulaire_outils.formulaire_service import Formulaire_Service
 
 #Class of the tools buttons inside the modules
 class HPOutilsButton(HoverButton1):
@@ -59,3 +61,11 @@ class HPOutilsButton(HoverButton1):
         elif self.linkedoutils_name == "Formulaire location":
 
             return Formulaire_Location()
+
+        elif self.linkedoutils_name == "Formulaire center":
+
+            return Formulaire_Center()
+
+        elif self.linkedoutils_name == "Formulaire service":
+
+            return Formulaire_Service()
