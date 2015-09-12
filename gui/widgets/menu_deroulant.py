@@ -1,10 +1,12 @@
+#Python Libs imports
 from kivy.uix.boxlayout import BoxLayout
-from kivy.properties import ObjectProperty, StringProperty
-from kivy.uix.listview import ListItemButton
 from kivy.uix.modalview import ModalView
 from kivy.uix.button import Button
+from kivy.uix.listview import ListItemButton
+from kivy.properties import ObjectProperty, StringProperty
 
-class Bouton_Deroulant(Button):
+#Class creating a list menu triggered when clicking on a button
+class Menu_Deroulant(Button):
     id_object= StringProperty()
     name_object= StringProperty()
     
@@ -19,27 +21,33 @@ class Bouton_Deroulant(Button):
         self.modal.open()
 
     def select_change(self,la):
-        self.text= la.selection[0].name_jur_ent
+        self.name_object = la.selection[0].name_object
+        print(self.name_object)
+        self.text= self.name_object
+        self.id_object = la.selection[0].id_object
+        print(self.id_object)
         self.modal.dismiss()
 
     def get_ent_jur_list(self):
-        return []
+        return ["GRE", "FRE"]
 
+#Class of a list menu inside a modal view
 class Liste_Deroulante(ModalView):
     ent_jur_listview = ObjectProperty()
 
-    def ent_jur_converter(self, index, ent_jur):
+    def ent_jur_converter(self, index, objet):
         result = {
-            "name_jur_ent": str(ent_jur)
+            "id_object": str(objet.ent_id),
+            "name_object": str(objet.ent_name)
         }
         return result
 
     def select_change(self):
         print("a")
 
-
-
-
+#Class of the items contained by the list menu
 class Liste_Deroulante_Item(BoxLayout, ListItemButton):
-    name_jur_ent = StringProperty()
-
+    id_object = StringProperty()
+    name_object = StringProperty()
+    id_cor1_object = StringProperty()
+    id_cor2_object = StringProperty()

@@ -1,7 +1,11 @@
+#Python Libs imports
 from kivy.core.window import Window
 from kivy.properties import ObjectProperty, BooleanProperty
-from kivy.uix.button import Button
 
+#Class creating the "mouse_on" event
+#credit: 'Olivier POYEN'
+#http://pastebin.com/Xm2jGXUY
+#LGPL Licence
 class HoverBehavior(object):
     """Hover behavior.
 
@@ -49,9 +53,4 @@ class HoverBehavior(object):
 
 
 
-class HoverButton(Button, HoverBehavior):
-    def on_enter(self):
-        self.background_normal= 'gui/rectbut2.png'
 
-    def on_leave(self):
-        self.background_normal= 'gui/rectbut1.png'

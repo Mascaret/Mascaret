@@ -1,24 +1,24 @@
+#Python Libs imports
 from kivy.config import Config
 Config.set('graphics', 'window_state', 'maximized')
 from kivy.uix.floatlayout import FloatLayout
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.gridlayout import GridLayout
-from kivy.app import App
-from kivy.graphics import Rectangle
-from kivy.properties import ObjectProperty, StringProperty, BooleanProperty
-from kivy.uix.modalview import ModalView
-from kivy.uix.label import Label
 from kivy.uix.button import Button
+from kivy.uix.screenmanager import ScreenManager, NoTransition
+from kivy.app import App
+from kivy.properties import ObjectProperty, StringProperty
 import time
 import pymysql
-from db import MyDB
+#Personnal Libs imports
+from database.db import MyDB
 from user.user import User
-from user.module import Module, HPModuleButton, HomePage, ModuleGUI,ListModuleFromFetch
-from user.outil import Outil, HPOutilsButton
-from gui.loginscreen import MascaretLoginScreen
-from kivy.uix.screenmanager import ScreenManager, Screen, SwapTransition, FallOutTransition, NoTransition
-from gui.hoverclasses import HoverButton
+from gui.home_screen.hp_outils_buttons import HPOutilsButton
+from gui.login_screen.loginscreen import MascaretLoginScreen
+from user.module import ListModuleFromFetch
+from gui.home_screen.modules_screens import ModuleGUI
+from gui.home_screen.home_screen import HomePage
+from gui.home_screen.hp_modules_buttons import HPModuleButton
 
+#root
 class MascaretRoot(FloatLayout):
 
     def __init__(self):
@@ -31,7 +31,7 @@ class MascaretRoot(FloatLayout):
         self.mascarethomescreen = MascaretHomeScreen()
         self.add_widget(self.mascarethomescreen)
 
-
+#Class of the homescreen
 class MascaretHomeScreen(ScreenManager):
     mode = StringProperty("wide")
 
@@ -140,27 +140,22 @@ class MascaretHomeScreen(ScreenManager):
                 except:
                     pass
 
-
-
-
-
-
-
-
+#Call of the login screen
 class MascaretLogScreen(MascaretLoginScreen):
     def on_right_id(self):
         app = Mascaret.get_running_app()
         app.root.show_bigscreen()
 
-
-
+#Panel containing tools on the right of the screen
 class RightPanel(FloatLayout):
     pass
 
+#button linking to the right panel
 class RightPanelBtn(Button):
     pass
 
-
+#App
 class Mascaret(App):
     pass
+
 Mascaret().run()

@@ -1,5 +1,7 @@
+#Python Libs imports
 import pymysql
 
+#Class of the dtb
 class MyDB(object):
     _db_connection = None
     _db_cur = None
