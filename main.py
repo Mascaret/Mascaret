@@ -5,7 +5,7 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.button import Button
 from kivy.uix.screenmanager import ScreenManager, NoTransition
 from kivy.app import App
-from kivy.properties import ObjectProperty, StringProperty, IntegerProperty
+from kivy.properties import ObjectProperty, StringProperty
 import time
 import pymysql
 #Personnal Libs imports
@@ -34,7 +34,7 @@ class MascaretRoot(FloatLayout):
 
 #Class of the homescreen
 class MascaretHomeScreen(ScreenManager):
-    mode = IntegerProperty(setts.Mode)
+    mode = StringProperty(setts.Mode)
 
     def __init__(self,**kwargs):
         super(MascaretHomeScreen, self).__init__()
@@ -110,7 +110,7 @@ class MascaretHomeScreen(ScreenManager):
 
 
     def on_mode(self, widget, mode):
-        if mode == 1 :
+        if mode == "wide" :
             print("wide")
             setts.Mode = "wide"
             print("setts: " + setts.Mode)
