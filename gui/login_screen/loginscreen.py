@@ -1,13 +1,14 @@
+#Python Libs imports
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.image import Image
-from kivy.graphics import Color
-from kivy.properties import ObjectProperty, StringProperty
-from user.user import User
-import pymysql
-from db import MyDB
+from kivy.properties import ObjectProperty
 from kivy.animation import Animation
+import pymysql
+#Personnal Libs imports
+from user.user import User
+from database.db import MyDB
 
-
+#Class creating the Login_screen
 class MascaretLoginScreen(FloatLayout):
     login_box = ObjectProperty()
     password_box = ObjectProperty()
@@ -21,7 +22,7 @@ class MascaretLoginScreen(FloatLayout):
     def login(self):
         animation = Animation(x=self.login_area.x - self.login_area.width, duration=0.8)
         animation.start(self.login_area)
-        self.pan_screen= Image(source= "gui/mylogo1.jpg", keep_ratio= False, allow_stretch= True,
+        self.pan_screen= Image(source= "gui/login_screen/loading.jpg", keep_ratio= False, allow_stretch= True,
                         color= (1, 1, 1, 0.1))
         self.add_widget(self.pan_screen)
         animation.bind(on_complete=self.check_login)

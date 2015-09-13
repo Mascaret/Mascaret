@@ -1,14 +1,15 @@
+#Class of the object Location
 class Location:
 
-    def __init__(self,loc_id,loc_intitule,loc_ent_jur):
-        self.loc_id = loc_id
-        self.loc_intitule = loc_intitule
-        self.loc_ent_jur = loc_ent_jur
+    def __init__(self,Id,intitule,id_cor1):
+        self.Id = Id
+        self.intitule = intitule
+        self.id_cor1 = id_cor1
 
     def delete():
         pass 
 
-
+#Class of the list of all the objects Location
 class ListLocationFromFetch(list):
 
     def __init__(self,fetch_result):

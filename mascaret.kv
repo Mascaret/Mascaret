@@ -1,9 +1,16 @@
 #:import la kivy.adapters.listadapter
-#:import ok user.outil
+#:import fej gui.formulaire_outils.formulaire_ent_jur
+#:import fl gui.formulaire_outils.formulaire_location
+#:import fc gui.formulaire_outils.formulaire_center
+#:import fs gui.formulaire_outils.formulaire_service
+#:import md gui.widgets.menu_deroulant
+
 
 MascaretRoot:
 
 
+############################### Login Screen ###############################
+    
 <MascaretLoginScreen>:
     login_box: login_input
     password_box: password_input
@@ -11,7 +18,7 @@ MascaretRoot:
     login_area: login_rect
     canvas:
         Rectangle:
-            source: 'gui/mylogo8.jpg'
+            source: 'gui/login_screen/login_screen-wallpaper.jpg'
             size: root.width if (root.width / root.height) > (1920 / 1080) else root.height * (1920 / 1080), root.height if (root.width / root.height) <= (1920 / 1080) else root.width / (1920 / 1080)
             pos: self.pos
     BoxLayout:
@@ -22,7 +29,7 @@ MascaretRoot:
                 Color:
                     rgba: (0,0,0,0.5)
                 Rectangle:
-                    source: 'gui/testrectangle.png'
+                    source: 'gui/login_screen/login_screen_input_area.png'
                     size: (self.width + 120, self.height + 20)
                     pos: self.x - 100, self.y + 5
             size_hint: (None, None)
@@ -90,9 +97,14 @@ MascaretRoot:
                     valign: 'top'
                     halign: 'right'
 
+############################# End Login Screen #############################
 
+
+############################### Home Screens ###############################
+                    
 <MascaretHomeScreen>:
     mode: "narrow" if self.width < 800 else "wide"
+
 
 <HomePage>:
     name: 'homepage'
@@ -124,13 +136,13 @@ MascaretRoot:
                             size: self.size
                             pos: self.pos
 
-                HoverButton:
+                HoverButton1:
                     id: right_but
                     size_hint: 0.07,1
                     pos_hint: {'x': 1}
                     disabled: True
                     text: 'Go to Screen 2'
-                    background_normal: 'rectbut1.png'
+                    background_normal: 'gui/hoverclasses/rectbut1.png'
                     background_color: (230/255, 230/255, 230/255, 1)
                     on_press:
                         self.parent.parent.parent.manager.transition.direction = 'left'
@@ -225,8 +237,12 @@ MascaretRoot:
                 self.parent.manager.transition.direction = 'right'
                 self.parent.manager.current = '1'
 
+############################ End Home Screens ##############################
 
 
+
+########################### Formulaire Ent Jur #############################
+                
 <Formulaire_Ent_Jur>:
     list_ent_jur_box: id_jur_ent_list
     new_legal_entity_box: new_legal_entity
@@ -283,13 +299,16 @@ MascaretRoot:
         id: listview
         adapter:
             la.ListAdapter(data= root.get_ent_jur_list(),
-            cls=ok.Jur_Ent_List_Item,
+            cls=fej.Jur_Ent_List_Item,
             args_converter=root.ent_jur_converter,selection_mode='single',
             allow_empty_selection=False)
 
 
+######################### End Formulaire Ent Jur ###########################
 
 
+########################### Formulaire Location ############################
+            
 <Location_List_Item>:
     size_hint_y: None
     height: "30dp"
@@ -319,14 +338,14 @@ MascaretRoot:
         id: listview
         adapter:
             la.ListAdapter(data= root.get_location_list(),
-            cls=ok.Location_List_Item,
+            cls=fl.Location_List_Item,
             args_converter=root.location_converter,selection_mode='single',
             allow_empty_selection=False)
 
-<Formulaire_Location>:
-    ent_jur_listbox: ent_jur_list
+<Formulaire_Location>:    
     location_listbox: location_list
     new_location_box: new_location
+    ent_jur_button: ent_jur_but
     size: self.size
     pos: self.pos
     BoxLayout:
@@ -350,7 +369,200 @@ MascaretRoot:
         id:location_list
         size_hint: 0.3,0.45
         pos_hint:{'x':0.05,'y':0.3}
-    Jur_Ent_List:
-        id:ent_jur_list
+    Menu_Deroulant_Ent_Jur:
+        id:ent_jur_but
+        pos_hint:{'x':0.45,'y':0.8}
+
+######################### End Formulaire Location ##########################
+
+
+############################ Formulaire Center #############################
+            
+<Center_List_Item>:
+    size_hint_y: None
+    height: "30dp"
+    selected_color: (0.1, 0.1, 0.1, 0.1)
+    deselected_color: (1,1,1,1)
+    Label:
+        size_hint_x: 0.2
+        text: root.id_center
+        italic: True
+        font_size: '20dp'
+        text_size: self.size
+        halign: 'justify'
+        valign: 'top'
+        font_name: 'OCRAEXT.TTF'
+    Label:
+        text: root.name_center
+        italic: True
+        font_size: '20dp'
+        text_size: self.size
+        halign: 'left'
+        valign: 'top'
+        font_name: 'OCRAEXT.TTF'
+    Label:
+        text: root.desc_center
+        italic: True
+        font_size: '20dp'
+        text_size: self.size
+        halign: 'left'
+        valign: 'top'
+        font_name: 'OCRAEXT.TTF'
+
+<Center_List>:
+    center_listview: listview
+    ListView:
+        id: listview
+        adapter:
+            la.ListAdapter(data= root.get_center_list(),
+            cls=fc.Center_List_Item,
+            args_converter=root.center_converter,selection_mode='single',
+            allow_empty_selection=False)
+
+<Formulaire_Center>:    
+    new_center_int_box: new_center_int
+    new_center_desc_box: new_center_desc
+    center_listbox: center_list
+    service_button: service_but
+    size: self.size
+    pos: self.pos
+    BoxLayout:
+        canvas.before:
+            Color:
+                rgba: 1,0,0,1
+            Rectangle:
+                size: self.size
+                pos: self.pos
+        spacing: "5dp"
+        size_hint: 0.7, None
+        pos_hint:{'x':0.05,'y':0.8}
+        height: "30dp"
+        Label:
+            text: "Intitule"
+        TextInput:
+            id: new_center_int
+        Label:
+            text: "Desc"
+        TextInput:
+            id: new_center_desc
+        Button:
+            size_hint: 0.5,1
+            text: "Add"
+            on_release: root.send_new_center()
+    Center_List:
+        id:center_list
         size_hint: 0.3,0.45
-        pos_hint:{'x':0.45,'y':0.3}
+        pos_hint:{'x':0.05,'y':0.3}
+    Menu_Deroulant_Service:
+        id:service_but
+        pos_hint:{'x':0.6,'y':0.7}
+
+########################## End Formulaire Center ###########################
+
+
+############################ Formulaire Service ############################
+            
+<Service_List_Item>:
+    size_hint_y: None
+    height: "30dp"
+    selected_color: (0.1, 0.1, 0.1, 0.1)
+    deselected_color: (1,1,1,1)
+    Label:
+        size_hint_x: 0.2
+        text: root.id_service
+        italic: True
+        font_size: '20dp'
+        text_size: self.size
+        halign: 'justify'
+        valign: 'top'
+        font_name: 'OCRAEXT.TTF'
+    Label:
+        text: root.name_service
+        italic: True
+        font_size: '20dp'
+        text_size: self.size
+        halign: 'left'
+        valign: 'top'
+        font_name: 'OCRAEXT.TTF'
+
+<Service_List>:
+    service_listview: listview
+    ListView:
+        id: listview
+        adapter:
+            la.ListAdapter(data= root.get_service_list(),
+            cls=fs.Service_List_Item,
+            args_converter=root.service_converter,selection_mode='single',
+            allow_empty_selection=False)
+
+<Formulaire_Service>:    
+    service_listbox: service_list
+    new_service_box: new_service
+    location_button: location_but
+    size: self.size
+    pos: self.pos
+    BoxLayout:
+        canvas.before:
+            Color:
+                rgba: 1,0,0,1
+            Rectangle:
+                size: self.size
+                pos: self.pos
+        spacing: "5dp"
+        size_hint: 0.3, None
+        pos_hint:{'x':0.05,'y':0.8}
+        height: "30dp"
+        TextInput:
+            id: new_service
+        Button:
+            size_hint: 0.5,1
+            text: "Add"
+            on_release: root.send_new_service()
+    Service_List:
+        id:service_list
+        size_hint: 0.3,0.45
+        pos_hint:{'x':0.05,'y':0.3}
+    Menu_Deroulant_Location:
+        id:location_but
+        pos_hint:{'x':0.45,'y':0.8}
+
+########################## End Formulaire Service ##########################
+
+
+############################## Menu Deroulant ##############################
+
+<Menu_Deroulant>:
+    size_hint: None,None
+    width: "200dp"
+    height: "30dp"
+    pos_hint: {"x":0.75,"y":0.8}
+    text: "Select"
+    on_release: self.MenuDeroulant()
+
+<Liste_Deroulante>:
+    background_color: 0,0,0,0
+    object_listview: listview
+    size_hint: None, None
+    ListView:
+        id: listview
+        adapter:
+            la.ListAdapter(data= [],
+            cls=md.Liste_Deroulante_Item,
+            args_converter=root.object_converter,selection_mode='single',
+            allow_empty_selection=False)
+
+<Liste_Deroulante_Item>:
+    size_hint_y: None
+    height: "30dp"
+    selected_color: (0.1, 0.1, 0.1, 0.1)
+    deselected_color: (1,1,1,1)
+    Label:
+        text: root.name_object
+        italic: True
+        font_size: '20dp'
+        text_size: self.size
+        halign: 'left'
+        valign: 'top'
+        font_name: 'OCRAEXT.TTF'
+
+############################ End Menu Deroulant ############################

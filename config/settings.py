@@ -1,0 +1,4 @@
+#Settings
+Mode = "wide"
+    
+
