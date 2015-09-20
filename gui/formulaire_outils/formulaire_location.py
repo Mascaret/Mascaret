@@ -31,8 +31,8 @@ class Formulaire_Location(RelativeLayout):
         #DB CONNECTION
         db = MyDB()
         location_text = str(self.new_location_box.text)
-        location_id = int(self.ent_jur_button.id_object)
-        location_exist = check_existence_of_new_location_and_add_it_db(data_location,location_text,location_id)
+        location_id = self.ent_jur_button.id_object
+        location_exist = db.check_existence_of_new_location_and_add_it_db(data_location,location_text,location_id)
 
         self.new_location_box.text = ""
         self.location_listbox.location_listview.adapter.data = self.location_listbox.get_location_list()

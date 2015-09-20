@@ -2,7 +2,7 @@
 import pymysql
 from database.logical_objects.entjur import EntJur,ListEntJur
 from database.logical_objects.location import Location,ListLocationFromFetch
-
+from database.logical_objects.service import Service,ListServiceFromFetch
 
 #Class of the dtb
 class MyDB(object):
@@ -108,3 +108,49 @@ class MyDB(object):
                 self.rollback()
 
         return location_exist
+
+    def get_service_list_db(self):
+        get_all_service_query = "SELECT * FROM Service;"
+        try:
+            self.query(get_all_service_query,[])
+
+            self.commit()
+        except:
+            self.rollback()
+        #On obtient une matrice
+        service_data = self.db_fetchall()
+        # Liste de service
+        data_service = ListServiceFromFetch(service_data)
+        return data_service
+
+
+    def check_existence_of_new_service_and_add_it_db(self,data_service,service_text,location_id):
+
+        service_exist = False
+        for row in data_service:
+            if row.intitule == service_text:
+                print("This service already exists")
+                service_exist = True
+
+        if service_exist == False:
+
+            try:
+                idLocation= location_id
+
+                add_permission_query = "INSERT INTO `permission` (`idPermission`) VALUES (NULL) ;"
+                self.query(add_permission_query,[])
+
+                get_idpermission_query = "SELECT P.idPermission AS Id FROM permission P ORDER BY P.idPermission DESC LIMIT 1;"
+                self.query(get_idpermission_query,[])
+                get_permission_id_data = self.db_fetchall()
+
+                add_service_query = """INSERT INTO `service` (idservice, intitule, idLocation)
+                                        VALUES (%s,%s,%s);"""
+
+                parameters_query = [get_permission_id_data,service_text,idLocation]
+                self.query(add_service_query,parameters_query)
+                self.commit()
+            except:
+                self.rollback()
+
+        return service_exist
