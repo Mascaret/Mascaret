@@ -30,36 +30,12 @@ class Formulaire_Location(RelativeLayout):
 
         #DB CONNECTION
         db = MyDB()
-        
-        location_exist = False
-        for row in data_location:
-            if row.intitule == self.new_location_box.text:
-                print("This Location already exists")
-                location_exist = True
+        location_text = str(self.new_location_box.text)
+        location_id = int(self.ent_jur_button.id_object)
+        location_exist = check_existence_of_new_location_and_add_it_db(data_location,location_text,location_id)
 
-        if location_exist == False:
-
-##            try:
-            idEntJur= self.ent_jur_button.id_object
-
-            add_permission_query = "INSERT INTO `permission` (`idPermission`) VALUES (NULL) ;"
-            db.query(add_permission_query,[])
-
-            get_idpermission_query = "SELECT P.idPermission AS Id FROM permission P ORDER BY P.idPermission DESC LIMIT 1;"
-            db.query(get_idpermission_query,[])
-            get_permission_id_data = db.db_fetchall()
-
-            add_location_query = """INSERT INTO `location` (idLoc, intitule, idEntJur)
-                                    VALUES (%s,%s,%s);"""
-
-            parameters_query = [get_permission_id_data,self.new_location_box.text,idEntJur]
-            db.query(add_location_query,parameters_query)
-            db.commit()
-##            except:
-##                db.rollback()
-
-            self.new_location_box.text = ""
-            self.location_listbox.location_listview.adapter.data = self.location_listbox.get_location_list()
+        self.new_location_box.text = ""
+        self.location_listbox.location_listview.adapter.data = self.location_listbox.get_location_list()
 
 #Class of the Location List Items
 class Location_List_Item(BoxLayout, ListItemButton):
@@ -83,43 +59,13 @@ class Location_List(BoxLayout):
 
         #DB CONNECTION
         db = MyDB()
-        #Execute la requete SQL
-        get_all_location_query = "SELECT * FROM Location;"
-
-        try:
-            db.query(get_all_location_query,[])
-
-            db.commit()
-        except:
-            db.rollback()
-        #On obtient une matrice
-        location_data = db.db_fetchall()
-
-        # Liste d'entite Juridique
-        data_location = ListLocationFromFetch(location_data)
-        
+        data_location = db.get_location_list_db()
         return data_location
 
 #Class of a list of Ent Jur trigered by clickiing on a button
 class Menu_Deroulant_Ent_Jur(Menu_Deroulant):
 
     def get_object_list(self):
-        
-        #DB CONNECTION
         db = MyDB()
-        #Execute la requete SQL
-        get_all_legal_entities_query = "SELECT *FROM EntiteJuridique;"
-
-        try:
-            db.query(get_all_legal_entities_query,[])
-            db.commit()
-        except:
-            db.rollback()
-        #On obtient une matrice
-        legal_entities_data = db.db_fetchall()
-
-        # Liste d'entite Juridique
-        data_ent_jur = ListEntJur(legal_entities_data)
-        
+        data_ent_jur = db.get_all_ent_jur()
         return data_ent_jur
-

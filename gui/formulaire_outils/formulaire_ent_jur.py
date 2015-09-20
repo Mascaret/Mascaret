@@ -27,7 +27,7 @@ class Formulaire_Ent_Jur(FloatLayout):
         #DB CONNECTION
         db = MyDB()
         entity_text = str(self.new_legal_entity_box.text)
-        legal_existence = db.check_existence_of_new_ent_jur_and_add_it_db(data_ent_jur,entity_text)
+        entity_existence = check_existence_of_new_ent_jur_and_add_it_db(,data_ent_jur,entity_text)
 
         self.new_legal_entity_box.text = ""
         self.list_ent_jur_box.ent_jur_listview.adapter.data = self.list_ent_jur_box.get_ent_jur_list()
