@@ -26,7 +26,7 @@ class Formulaire_Ent_Jur(FloatLayout):
 
         #DB CONNECTION
         db = MyDB()
-        
+
         entity_exist = False
         for row in data_ent_jur:
             if row.intitule == self.new_legal_entity_box.text:
@@ -63,21 +63,6 @@ class Jur_Ent_List(BoxLayout):
         return result
 
     def get_ent_jur_list(self):
-
-        #DB CONNECTION
         db = MyDB()
-        #Execute la requete SQL
-        get_all_legal_entities_query = "SELECT *FROM EntiteJuridique;"
-
-        try:
-            db.query(get_all_legal_entities_query,[])
-            db.commit()
-        except:
-            db.rollback()
-        #On obtient une matrice
-        legal_entities_data = db.db_fetchall()
-
-        # Liste d'entite Juridique
-        data_ent_jur = ListEntJur(legal_entities_data)
-        
+        data_ent_jur = db.get_all_ent_jur()
         return data_ent_jur
