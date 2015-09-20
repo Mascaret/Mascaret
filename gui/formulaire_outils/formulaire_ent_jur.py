@@ -26,25 +26,11 @@ class Formulaire_Ent_Jur(FloatLayout):
 
         #DB CONNECTION
         db = MyDB()
+        entity_text = str(self.new_legal_entity_box.text)
+        legal_existence = db.check_existence_of_new_ent_jur_and_add_it_db(data_ent_jur,entity_text)
 
-        entity_exist = False
-        for row in data_ent_jur:
-            if row.intitule == self.new_legal_entity_box.text:
-                print("This Legal Entity already exists")
-                entity_exist = True
-        if entity_exist == False:
-            add_legal_entity_query = "INSERT INTO `entitejuridique` (`intitule`) VALUES (%s) ;"
-
-            parameters_query = [str(self.new_legal_entity_box.text)]
-
-            try:
-                db.query(add_legal_entity_query,parameters_query)
-                db.commit()
-            except:
-                db.rollback()
-
-            self.new_legal_entity_box.text = ""
-            self.list_ent_jur_box.ent_jur_listview.adapter.data = self.list_ent_jur_box.get_ent_jur_list()
+        self.new_legal_entity_box.text = ""
+        self.list_ent_jur_box.ent_jur_listview.adapter.data = self.list_ent_jur_box.get_ent_jur_list()
 
 #Class of the Ent Jur List Items
 class Jur_Ent_List_Item(BoxLayout, ListItemButton):

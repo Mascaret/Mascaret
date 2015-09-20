@@ -8,10 +8,7 @@ class MyDB(object):
     _db_cur = None
 
     def __init__(self):
-        try:
-            self._db_connection = pymysql.connect('localhost', 'root', '', 'mascaretdb7')
-        except:
-
+        self._db_connection = pymysql.connect('localhost', 'root', '', 'mascaret7')
         self._db_cur = self._db_connection.cursor()
         self._db_connection.autocommit(False)
 
@@ -43,3 +40,21 @@ class MyDB(object):
         data_ent_jur = ListEntJur(legal_entities_data)
 
         return data_ent_jur
+
+    def check_existence_of_new_ent_jur_and_add_it_db(self,data_ent_jur,entity_text):
+        entity_exist = False
+        for row in data_ent_jur:
+            if (row.intitule == entity_text):
+                print("This Legal Entity already exists")
+                entity_exist = True
+        if entity_exist == False:
+            add_legal_entity_query = "INSERT INTO `entitejuridique` (`intitule`) VALUES (%s) ;"
+
+            parameters_query = [str(entity_text)]
+
+            try:
+                self.query(add_legal_entity_query,parameters_query)
+                self.commit()
+            except:
+                self.rollback()
+        return entity_exist
