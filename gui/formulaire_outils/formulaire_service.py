@@ -7,7 +7,7 @@ from kivy.properties import ObjectProperty, StringProperty
 
 #Personnal Libs imports
 from database.db import MyDB
-from database.logical_objects.entjur import EntJur,ListEntJur
+from database.logical_objects.entjur import LegalEntity,ListLegalEntity
 from database.logical_objects.location import Location,ListLocationFromFetch
 from gui.widgets.menu_deroulant import Menu_Deroulant
 from database.logical_objects.service import Service,ListServiceFromFetch

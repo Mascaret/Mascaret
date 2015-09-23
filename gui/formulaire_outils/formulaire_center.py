@@ -4,10 +4,11 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.listview import ListItemButton
 import pymysql
 from kivy.properties import ObjectProperty, StringProperty
+from kivy.uix.dropdown import DropDown
 
 #Personnal Libs imports
 from database.db import MyDB
-from database.logical_objects.entjur import EntJur,ListEntJur
+from database.logical_objects.entjur import LegalEntity, ListLegalEntity
 from database.logical_objects.service import Service,ListServiceFromFetch
 from gui.widgets.menu_deroulant import Menu_Deroulant
 from database.logical_objects.center import Center,ListCenterFromFetch
@@ -32,7 +33,7 @@ class Formulaire_Center(RelativeLayout):
 
         #DB CONNECTION
         db = MyDB()
-        
+
         center_exist = False
         for row in data_center:
             if row.intitule == self.new_center_int_box.text:
@@ -76,8 +77,8 @@ class Center_List(BoxLayout):
 
     def center_converter(self, index, center):
         result = {
-            "id_center": str(center.Id),
-            "name_center": str(center.intitule),
+            "id_center": str(center.a_index),
+            "name_center": str(center.a_),
             "id_service_cor": str(center.id_cor1),
             "desc_center": str(center.desc)
         }

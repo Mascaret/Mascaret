@@ -5,7 +5,7 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.adapters.listadapter import ListAdapter
 from kivy.uix.listview import ListItemButton, ListView, ListItemLabel
 from kivy.uix.boxlayout import BoxLayout
-from entjur import EntJur,ListEntJur
+from entjur import LegalEntity,ListLegalEntity
 from location import Location,ListLocationFromFetch
 import pymysql
 from db import MyDB
@@ -110,7 +110,7 @@ class Formulaire_Ent_Jur(FloatLayout):
 
         #DB CONNECTION
         db = MyDB()
-        
+
         entity_exist = False
         for row in data_ent_jur:
             if row.ent_name == self.new_legal_entity_box.text:
@@ -163,7 +163,7 @@ class Jur_Ent_List(BoxLayout):
 
         # Liste d'entite Juridique
         data_ent_jur = ListEntJur(legal_entities_data)
-        
+
         return data_ent_jur
 
 
@@ -187,7 +187,7 @@ class Formulaire_Location(RelativeLayout):
 
         #DB CONNECTION
         db = MyDB()
-        
+
         location_exist = False
         for row in data_location:
             if row.loc_intitule == self.new_location_box.text:
@@ -195,8 +195,8 @@ class Formulaire_Location(RelativeLayout):
                 location_exist = True
 
         if location_exist == False:
-            
-            #selected_ent_jur = 
+
+            #selected_ent_jur =
             idEntJur= self.ent_jur_listbox.ent_jur_listview.adapter.selection[0].id_jur_ent
 
             add_permission_query = "INSERT INTO `Permission`;"
@@ -216,7 +216,7 @@ class Formulaire_Location(RelativeLayout):
             id_permission_data = db.db_fetchone()
 
             parameters_query = [id_permission_data,self.new_location_box.text,idEntJur]
-            
+
             db.query(add_location_query,parameters_query)
             db.commit()
             #except:
@@ -261,5 +261,5 @@ class Location_List(BoxLayout):
 
         # Liste d'entite Juridique
         data_location = ListLocationFromFetch(location_data)
-        
+
         return data_location

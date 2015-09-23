@@ -7,7 +7,7 @@ from kivy.properties import ObjectProperty, StringProperty
 
 #Personnal Libs imports
 from database.db import MyDB
-from database.logical_objects.entjur import EntJur,ListEntJur
+from database.logical_objects.entjur import LegalEntity, ListLegalEntity
 
 #Class of the Legal Entity Form.
 class Formulaire_Ent_Jur(FloatLayout):
@@ -26,7 +26,7 @@ class Formulaire_Ent_Jur(FloatLayout):
 
         #DB CONNECTION
         db = MyDB()
-        
+
         entity_exist = False
         for row in data_ent_jur:
             if row.intitule == self.new_legal_entity_box.text:
@@ -57,8 +57,8 @@ class Jur_Ent_List(BoxLayout):
 
     def ent_jur_converter(self, index, ent_jur):
         result = {
-            "id_jur_ent": str(ent_jur.Id),
-            "name_jur_ent": str(ent_jur.intitule)
+            "id_jur_ent": str(ent_jur.a_index),
+            "name_jur_ent": str(ent_jur.a_name)
         }
         return result
 
@@ -78,6 +78,6 @@ class Jur_Ent_List(BoxLayout):
         legal_entities_data = db.db_fetchall()
 
         # Liste d'entite Juridique
-        data_ent_jur = ListEntJur(legal_entities_data)
-        
+        data_ent_jur = ListLegalEntity(legal_entities_data)
+
         return data_ent_jur
