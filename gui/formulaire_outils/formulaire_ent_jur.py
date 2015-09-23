@@ -26,25 +26,11 @@ class Formulaire_Ent_Jur(FloatLayout):
 
         #DB CONNECTION
         db = MyDB()
-        
-        entity_exist = False
-        for row in data_ent_jur:
-            if row.intitule == self.new_legal_entity_box.text:
-                print("This Legal Entity already exists")
-                entity_exist = True
-        if entity_exist == False:
-            add_legal_entity_query = "INSERT INTO `entitejuridique` (`intitule`) VALUES (%s) ;"
+        entity_text = str(self.new_legal_entity_box.text)
+        entity_existence = check_existence_of_new_ent_jur_and_add_it_db(data_ent_jur,entity_text)
 
-            parameters_query = [str(self.new_legal_entity_box.text)]
-
-            try:
-                db.query(add_legal_entity_query,parameters_query)
-                db.commit()
-            except:
-                db.rollback()
-
-            self.new_legal_entity_box.text = ""
-            self.list_ent_jur_box.ent_jur_listview.adapter.data = self.list_ent_jur_box.get_ent_jur_list()
+        self.new_legal_entity_box.text = ""
+        self.list_ent_jur_box.ent_jur_listview.adapter.data = self.list_ent_jur_box.get_ent_jur_list()
 
 #Class of the Ent Jur List Items
 class Jur_Ent_List_Item(BoxLayout, ListItemButton):
@@ -63,21 +49,6 @@ class Jur_Ent_List(BoxLayout):
         return result
 
     def get_ent_jur_list(self):
-
-        #DB CONNECTION
         db = MyDB()
-        #Execute la requete SQL
-        get_all_legal_entities_query = "SELECT *FROM EntiteJuridique;"
-
-        try:
-            db.query(get_all_legal_entities_query,[])
-            db.commit()
-        except:
-            db.rollback()
-        #On obtient une matrice
-        legal_entities_data = db.db_fetchall()
-
-        # Liste d'entite Juridique
-        data_ent_jur = ListEntJur(legal_entities_data)
-        
+        data_ent_jur = db.get_all_ent_jur()
         return data_ent_jur

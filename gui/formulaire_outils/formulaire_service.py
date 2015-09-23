@@ -31,36 +31,12 @@ class Formulaire_Service(RelativeLayout):
 
         #DB CONNECTION
         db = MyDB()
-        
-        service_exist = False
-        for row in data_service:
-            if row.intitule == self.new_service_box.text:
-                print("This service already exists")
-                service_exist = True
+        service_text = self.new_service_box.text
+        location_id = self.location_button.id_object
+        service_exist = db.check_existence_of_new_service_and_add_it_db(data_service,service_text,location_id)
 
-        if service_exist == False:
-
-##            try:
-            idLocation= self.location_button.id_object
-
-            add_permission_query = "INSERT INTO `permission` (`idPermission`) VALUES (NULL) ;"
-            db.query(add_permission_query,[])
-
-            get_idpermission_query = "SELECT P.idPermission AS Id FROM permission P ORDER BY P.idPermission DESC LIMIT 1;"
-            db.query(get_idpermission_query,[])
-            get_permission_id_data = db.db_fetchall()
-
-            add_service_query = """INSERT INTO `service` (idservice, intitule, idLocation)
-                                    VALUES (%s,%s,%s);"""
-
-            parameters_query = [get_permission_id_data,self.new_service_box.text,idLocation]
-            db.query(add_service_query,parameters_query)
-            db.commit()
-##            except:
-##                db.rollback()
-
-            self.new_service_box.text = ""
-            self.service_listbox.service_listview.adapter.data = self.service_listbox.get_service_list()
+        self.new_service_box.text = ""
+        self.service_listbox.service_listview.adapter.data = self.service_listbox.get_service_list()
 
 #Class of the Location List Items
 class Service_List_Item(BoxLayout, ListItemButton):
@@ -84,43 +60,15 @@ class Service_List(BoxLayout):
 
         #DB CONNECTION
         db = MyDB()
-        #Execute la requete SQL
-        get_all_service_query = "SELECT * FROM Service;"
-
-        try:
-            db.query(get_all_service_query,[])
-
-            db.commit()
-        except:
-            db.rollback()
-        #On obtient une matrice
-        service_data = db.db_fetchall()
-
-        # Liste de service
-        data_service = ListServiceFromFetch(service_data)
-        
+        data_service = db.get_service_list_db()
         return data_service
 
 #Class of a list of Ent Jur trigered by clickiing on a button
 class Menu_Deroulant_Location(Menu_Deroulant):
 
     def get_object_list(self):
-        
+
         #DB CONNECTION
         db = MyDB()
-        #Execute la requete SQL
-        get_all_location_query = "SELECT *FROM Location;"
-
-        try:
-            db.query(get_all_location_query,[])
-            db.commit()
-        except:
-            db.rollback()
-        #On obtient une matrice
-        location_data = db.db_fetchall()
-
-        # Liste de location
-        data_location = ListLocationFromFetch(location_data)
-        
+        data_location = db.get_location_list_db()
         return data_location
-
