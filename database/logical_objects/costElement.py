@@ -19,3 +19,20 @@ class CostElement(ObjectGeneral):
         self.a_description = description
         self.a_listExpenses = listExpenses
         self.a_listGroupCostElement = listGroupCostElement
+        db.addCostElement(self)
+
+    def addExpense(self, i_expense):
+        if i_group.a_costElement != self:
+            return
+        self.a_listGroupCostElement.append(i_expense)
+
+    def addGroupCostElement(self, i_group):
+        if i_group in self.a_listGroupCostElement:
+            return
+        self.a_listGroupCostElement.append(i_group)
+        i_group.addCostElement(self)
+
+    ## @fn Destructor of the class CostElement
+    #
+    def __del__(self):
+        db.removeCostElement(self)

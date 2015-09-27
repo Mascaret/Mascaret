@@ -18,13 +18,28 @@ class WBSElement(ObjectGeneral):
     #  @param legalEntity The LegalEntity this WBSElement is linked to.
     #  @param listExpenses The list of Expenses this WBSElement is linked to.
     #
-    def __init__(self, index, code, description, applicationDate, closeDate, codeType, wbsCA, legalEntity, listExpenses = []):
+    def __init__(self, index, code, description, project, center, applicationDate, closeDate, codeType, wbsCA, legalEntity, listExpenses = []):
         self.a_index = int(index)
         self.a_code = str(code)
         self.a_description = str(description)
+        self.a_project = project
+        self.a_project.addWBSElement(self)
+        self.a_center = center
         self.a_applicationDate = applicationDate
         self.a_closeDate = closeDate
         self.a_codeType = codeType
         self.a_wbsCA = wbsCA
         self.a_legalEntity = legalEntity
+        self.a_legalEntity.addWbsElement(self)
         self.a_listExpenses = listExpenses #peut etre une list nul = []
+        db.addWBSElement(self)
+
+    ## @fn Destructor of the class Service
+    #
+    def __del__(self):
+        db.removeWBSElement(self)
+
+    def addExpense(self, i_expense):
+        if self != i_expense.a_wbsElement:
+            return
+        self.a_listExpenses.append(i_expense)

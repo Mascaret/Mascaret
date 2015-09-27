@@ -10,7 +10,7 @@ MascaretRoot:
 
 
 ############################### Login Screen ###############################
-    
+
 <MascaretLoginScreen>:
     login_box: login_input
     password_box: password_input
@@ -101,7 +101,7 @@ MascaretRoot:
 
 
 ############################### Home Screens ###############################
-                    
+
 <MascaretHomeScreen>:
     mode: "narrow" if self.width < 800 else "wide"
 
@@ -242,7 +242,7 @@ MascaretRoot:
 
 
 ########################### Formulaire Ent Jur #############################
-                
+
 <Formulaire_Ent_Jur>:
     list_ent_jur_box: id_jur_ent_list
     new_legal_entity_box: new_legal_entity
@@ -308,7 +308,7 @@ MascaretRoot:
 
 
 ########################### Formulaire Location ############################
-            
+
 <Location_List_Item>:
     size_hint_y: None
     height: "30dp"
@@ -342,7 +342,7 @@ MascaretRoot:
             args_converter=root.location_converter,selection_mode='single',
             allow_empty_selection=False)
 
-<Formulaire_Location>:    
+<Formulaire_Location>:
     location_listbox: location_list
     new_location_box: new_location
     ent_jur_button: ent_jur_but
@@ -377,7 +377,7 @@ MascaretRoot:
 
 
 ############################ Formulaire Center #############################
-            
+
 <Center_List_Item>:
     size_hint_y: None
     height: "30dp"
@@ -419,11 +419,10 @@ MascaretRoot:
             args_converter=root.center_converter,selection_mode='single',
             allow_empty_selection=False)
 
-<Formulaire_Center>:    
+<Formulaire_Center>:
     new_center_int_box: new_center_int
     new_center_desc_box: new_center_desc
     center_listbox: center_list
-    service_button: service_but
     size: self.size
     pos: self.pos
     BoxLayout:
@@ -453,15 +452,12 @@ MascaretRoot:
         id:center_list
         size_hint: 0.3,0.45
         pos_hint:{'x':0.05,'y':0.3}
-    Menu_Deroulant_Service:
-        id:service_but
-        pos_hint:{'x':0.6,'y':0.7}
 
 ########################## End Formulaire Center ###########################
 
 
 ############################ Formulaire Service ############################
-            
+
 <Service_List_Item>:
     size_hint_y: None
     height: "30dp"
@@ -495,7 +491,7 @@ MascaretRoot:
             args_converter=root.service_converter,selection_mode='single',
             allow_empty_selection=False)
 
-<Formulaire_Service>:    
+<Formulaire_Service>:
     service_listbox: service_list
     new_service_box: new_service
     location_button: location_but

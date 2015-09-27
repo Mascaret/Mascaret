@@ -17,13 +17,20 @@ class Service(ObjectGeneral):
         self.a_index = int(index)
         self.a_name = str(name)
         self.a_location = location
+        self.a_location.addService(self)
         self.a_listCenters = listCenters
+        db.addService(self)
 
-    ## @fn delete()
-    #  @brief Destructor of the class ProjectType.
+    ## @fn Destructor of the class Service
     #
-    def delete():
-        pass
+    def __del__(self):
+        db.removeService(self)
+
+    def addCenter(self, i_center):
+        if i_center.a_service != self:
+            return
+        self.a_listCenters.append(i_center)
+
 
 
 #------------------------------------------------------------------------------------------------------------------------
@@ -39,4 +46,9 @@ class ListServiceFromFetch(list):
     #
     def __init__(self,fetch_result):
         for row in fetch_result:
-            self.append(Service(row[0],row[2],row[1]))
+            service = db.getService(row[0])
+            if service:
+                self.append(service)
+            else:
+                location = db.getLocation(row[2])
+                self.append(Service(row[0],row[1],location))

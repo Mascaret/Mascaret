@@ -21,3 +21,15 @@ class Employee(ObjectGeneral):
         self.a_surname = str(surname)
         self.a_listCenters = listCenters
         self.a_mapProjectFunction = mapProjectFunction
+        db.addEmployee(self)
+
+    def addCenter(self, i_center):
+        if i_center in self.a_listCenters:
+            return
+        self.a_listCenters.append(i_center)
+        i_center.addEmployee(self)
+
+    ## @fn Destructor of the class Employee
+    #
+    def __del__(self):
+        db.removeEmployee(self)

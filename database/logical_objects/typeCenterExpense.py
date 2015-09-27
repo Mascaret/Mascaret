@@ -19,3 +19,9 @@ class TypeCenterExpense(ObjectGeneral):
         self.a_typ = str(typ)
         self.a_expense = expense
         self.a_center = center
+        db.addCenterExpensesType(self)
+
+    ## @fn Destructor of the class CenterExpensesType
+    #
+    def __del__(self):
+        db.removeCenterExpensesType(self)

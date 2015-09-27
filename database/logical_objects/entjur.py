@@ -18,6 +18,24 @@ class LegalEntity(ObjectGeneral):
         self.a_name = str(name)
         self.a_listLocations = list_locations
         self.a_listWbsElements = list_wbsElements
+        db.addLegalEntity(self)
+
+    def addLocation(self, i_location):
+        if i_location.a_legalEntity != self:
+            return
+        db.addLocation(i_location)
+        self.a_listLocations.append(i_location)
+
+    def addWbsElement(self, i_element):
+        if i_element.a_legalEntity != self:
+            return
+        db.addWBSElement(i_element)
+        self.a_listWbsElements.append(i_element)
+
+    ## @fn Destructor of the class LegalEntity
+    #
+    def __del__(self):
+        db.removeLegalEntity(self)
 
 #------------------------------------------------------------------------------------------------------------------------
 ## @class ListLegalEntity entjur.py
@@ -31,4 +49,8 @@ class ListLegalEntity(list):
     #
     def __init__(self, legalEntityFetched):
         for row in legalEntityFetched:
-            self.append(LegalEntity(int(row[0]),str(row[1])))
+            entity = db.getLegalEntity(row[0])
+            if entity:
+                self.append(entity)
+            else:
+                self.append(LegalEntity(int(row[0]),str(row[1])))

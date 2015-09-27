@@ -16,3 +16,14 @@ class ToolType(ObjectGeneral):
         self.a_index = int(index)
         self.a_name = str(name)
         self.a_listTools = listTools
+        db.addToolType(self)
+
+    ## @fn Destructor of the class ToolType
+    #
+    def __del__(self):
+        db.removeToolType(self)
+
+    def addTool(self, i_tool):
+        if self != i_tool.a_toolType:
+            return
+        self.a_listTools.append(i_tool)

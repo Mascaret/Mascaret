@@ -17,3 +17,9 @@ class Classification(ObjectGeneral):
         self.a_index = int(index)
         self.a_name = str(name)
         self.a_description = str(description)
+        db.addClassification(self)
+
+    ## @fn Destructor of the class Classification
+    #
+    def __del__(self):
+        db.removeClassification(self)

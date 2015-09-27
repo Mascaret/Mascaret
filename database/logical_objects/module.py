@@ -16,3 +16,14 @@ class Module(ObjectGeneral):
         self.a_index = int(index)
         self.a_name = str(name)
         self.a_listTools = listTools
+        db.addModule(self)
+
+    ## @fn Destructor of the class Module
+    #
+    def __del__(self):
+        db.removeModule(self)
+
+    def addTool(self, i_tool):
+        if i_tool.a_module != self:
+            return
+        self.a_listTools.append(i_tool)

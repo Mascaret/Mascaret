@@ -20,3 +20,15 @@ class Tool(ObjectGeneral):
         self.a_module = str(module)
         self.a_toolType = toolType
         self.a_listUsers = listUsers
+        db.addTool(self)
+
+    ## @fn Destructor of the class Tool
+    #
+    def __del__(self):
+        db.removeTool(self)
+
+    def addUser(self, i_user):
+        if i_user in self.a_listUsers:
+            return
+        self.a_listUsers.append(i_user)
+        i_user.addTool(self)

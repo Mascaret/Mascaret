@@ -24,3 +24,27 @@ class groupCostElement(ObjectGeneral):
         self.a_listCostElement = listCostElement # peut etre NUL = []
         self.a_listCenter = listCenter # peut etre NUL = []
         self.a_listWBSca = listWBSca
+        db.addGroupCostElement(self)
+
+    ## @fn Destructor of the class GroupCostElement
+    #
+    def __del__(self):
+        db.removeGroupCostElement(self)
+
+    def addCostElement(self, i_element):
+        if i_element in self.a_listCostElement:
+            return
+        self.a_listCostElement.append(i_element)
+        i_ca.addGroupCostElement(self)
+
+    def addCenter(self, i_center):
+        if i_center in self.a_listWbsCA:
+            return
+        self.a_listWbsCA.append(i_center)
+        i_ca.addGroupCostElement(self)
+
+    def addWbsCA(self, i_ca):
+        if i_ca in self.a_listWbsCA:
+            return
+        self.a_listWbsCA.append(i_ca)
+        i_ca.addGroupCostElement(self)

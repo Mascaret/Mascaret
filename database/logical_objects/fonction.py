@@ -12,3 +12,9 @@ class Function(ObjectGeneral):
         self.a_intitule = str(intitule)
         self.a_employee = employee
         self.a_project = project
+        db.addFunction(self)
+
+    ## @fn Destructor of the class Function
+    #
+    def __del__(self):
+        db.removeFunction(self)

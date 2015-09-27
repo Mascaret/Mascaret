@@ -25,3 +25,9 @@ class Address:
         self.a_city = str(city)
         self.a_country = str(country)
         self.a_customer = customer
+        db.addAddress(self)
+
+    ## @fn Destructor of the class Address
+    #
+    def __del__(self):
+        db.removeAddress(self)

@@ -18,3 +18,14 @@ class Customer(ObjectGeneral):
         self.a_name = str(name)
         self.a_address = address
         self.a_listProjects = listProjects
+        db.addCustomer(self)
+
+    def addProject(self, i_project):
+        if i_project.a_customer != self:
+            return
+        self.a_listProjects.append(i_project)
+
+    ## @fn Destructor of the class Customer
+    #
+    def __del__(self):
+        db.removeCustomer(self)

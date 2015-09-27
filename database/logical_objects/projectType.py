@@ -16,3 +16,14 @@ class ProjectType(ObjectGeneral):
         self.a_index = int(index)
         self.a_name = str(name)
         self.a_listProjects = listProjects
+        db.addProjectType(self)
+
+    ## @fn Destructor of the class ProjectType
+    #
+    def __del__(self):
+        db.removeProjectType(self)
+
+    def addProject(self, i_project):
+        if i_project.a_projectTyp != self:
+            return
+        self.a_listProjects.append(i_project)

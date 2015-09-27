@@ -28,3 +28,15 @@ class Expense(ObjectGeneral):
         self.a_typeCE = typeCE
         self.a_wbsElement = wbsElement
         self.a_listUsers = listUsers # peut etre NUL
+        db.addExpense(self)
+
+    def addUser(self, i_user):
+        if i_user in self.a_listUsers:
+            return
+        self.a_listUsers.append(i_user)
+        i_user.addExpense(self)
+
+    ## @fn Destructor of the class Expense
+    #
+    def __del__(self):
+        db.removeExpense(self)

@@ -8,6 +8,7 @@ import pymysql
 #Personnal Libs imports
 from gui.login_screen.loginscreen import MascaretLoginScreen
 from gui.home_screen.mascaret_screen_manager import MascaretHomeScreen
+from database.db import MyDB
 
 #root
 class MascaretRoot(FloatLayout):
@@ -16,6 +17,7 @@ class MascaretRoot(FloatLayout):
         super(MascaretRoot, self).__init__()
         self.mascaretloginscreen = MascaretLogScreen()
         self.add_widget(self.mascaretloginscreen)
+        db = MyDB()
 
     def show_bigscreen(self):
         self.clear_widgets()
@@ -41,5 +43,5 @@ class RightPanelBtn(Button):
 #App
 class Mascaret(App):
     pass
-    
+
 Mascaret().run()

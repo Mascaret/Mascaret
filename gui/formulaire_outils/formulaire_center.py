@@ -78,9 +78,9 @@ class Center_List(BoxLayout):
     def center_converter(self, index, center):
         result = {
             "id_center": str(center.a_index),
-            "name_center": str(center.a_),
-            "id_service_cor": str(center.id_cor1),
-            "desc_center": str(center.desc)
+            "name_center": str(center.a_name),
+            "id_service_cor": str(center.a_service),
+            "desc_center": str(center.a_description)
         }
         return result
 
@@ -102,29 +102,5 @@ class Center_List(BoxLayout):
 
         # Liste de center
         data_center = ListCenterFromFetch(center_data)
-        
+
         return data_center
-
-#Class of a list of Ent Jur trigered by clickiing on a button
-class Menu_Deroulant_Service(Menu_Deroulant):
-
-    def get_object_list(self):
-        
-        #DB CONNECTION
-        db = MyDB()
-        #Execute la requete SQL
-        get_all_service_query = "SELECT *FROM Service;"
-
-        try:
-            db.query(get_all_service_query,[])
-            db.commit()
-        except:
-            db.rollback()
-        #On obtient une matrice
-        service_data = db.db_fetchall()
-
-        # Liste de service
-        data_service = ListServiceFromFetch(service_data)
-        
-        return data_service
-

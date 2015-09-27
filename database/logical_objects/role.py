@@ -17,3 +17,15 @@ class Role(ObjectGeneral):
         self.a_index = int(index)
         self.a_name = str(name)
         self.a_listUsers = listUsers
+        db.addRole(self)
+
+    ## @fn Destructor of the class Role
+    #
+    def __del__(self):
+        db.removeRole(self)
+
+    def addUser(self, i_user):
+        if i_user in self.a_listUsers:
+            return
+        self.a_listUsers.append(i_user)
+        i_user.addRole(self)

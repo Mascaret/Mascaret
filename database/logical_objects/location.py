@@ -18,14 +18,33 @@ class Location(ObjectGeneral):
         self.a_index = index
         self.a_name = name
         self.a_legalEntity = legalEntity
+        self.a_legalEntity.addLocation(self)
         self.a_listServices = listServices
         self.a_listProjects = listProjects
+        db.addLocation(self)
 
     ## @fn delete()
     #  @brief Destructor of the class Location.
     #
     def delete():
         pass
+
+    ## @fn Destructor of the class Location
+    #
+    def __del__(self):
+        db.removeLocation(self)
+
+    def addService(self, i_service):
+        if i_service.a_location != self:
+            return
+        self.a_listServices.append(i_service)
+
+    def addProject(self, i_project):
+        if i_project.a_location != self:
+            return
+        self.a_listProjects.append(i_project)
+
+
 
 ## @class ListLocationFromFetch location.h
 #  @brief Class of the list of all the objects Location
@@ -38,4 +57,9 @@ class ListLocationFromFetch(list):
     #
     def __init__(self, fetchResult):
         for row in fetchResult:
-            self.append(Location(row[0],row[1],row[2]))
+            location = db.getLocation(row[0])
+            if location:
+                self.append(location)
+            else:
+                legalEntity = db.getLegalEntity(row[2])
+                self.append(Location(row[0],row[1],legalEntity))

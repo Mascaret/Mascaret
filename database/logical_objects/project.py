@@ -20,7 +20,7 @@ class Project(ObjectGeneral):
     #  @param center The center where the benefits of this project will go.
     #  @param listWBSElement The list of WBS Elements linked to this project.
     #
-    def __init__(self, index, name, applicationDate, rewardDate, closeDate, edit, modifying, projectTyp, customer, center = None, listWBSElement = []):
+    def __init__(self, index, name, applicationDate, rewardDate, closeDate, edit, modifying, projectTyp, customer, location, listWBSElement = []):
         self.a_index = int(index)
         self.a_name = str(name)
         self.a_applicationDate = applicationDate
@@ -30,5 +30,18 @@ class Project(ObjectGeneral):
         self.a_modifying = modifying
         self.a_projectTyp = projectTyp
         self.a_customer = customer
-        self.a_center = center
+        self.a_location = location
+        self.a_location.addProject(self)
         self.a_listWBSElement = listWBSElement
+        db.addProject(self)
+
+    ## @fn Destructor of the class Project
+    #
+    def __del__(self):
+        db.removeProject(self)
+
+    def addWBSElement(self, i_element):
+        if i_element.a_project != self:
+            return
+        db.addWBSElement(i_element)
+        self.a_listWBSElement.append(i_element)
