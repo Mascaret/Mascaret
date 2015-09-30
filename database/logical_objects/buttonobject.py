@@ -1,21 +1,43 @@
 from kivy.uix.button import Button
+from user.singleton import Singleton
 from database.logical_objects.object import ObjectGeneral
+from database.logical_objects.center import Center
+from database.logical_objects.service import Service
+from database.logical_objects.employee import Employee
+from database.logical_objects.expense import Expense
+
 
 #------------------------------------------------------------------------------------------------------------------------
 ## @class ButtonObjectGeneral ButtonObjectGeneral.py
 #  @brief Class of the object ButtonObjectGeneral.
 #  @sa ObjectGeneral
 #
-class ButtonFactory:
-    factories = {}
-    def addFactory(id, newFactory):
-        ButtonFactory.factories.put[id] = newFactory
+class ButtonFactory (metaclass=Singleton):
+
+    def __init__(self):
+        self.factories.addFactory(0, ButtonObjectClassic.Factory)
+        self.factories.addFactory(1, ButtonObjectCenter.Factory)
+        self.factories.addFactory(2, ButtonObjectService.Factory)
+        self.factories.addFactory(3, ButtonObjectEmployee.Factory)
+        self.factories.addFactory(4, ButtonObjectExpense.Factory)
+        print("initialisation de la Factory")
+
+    def addFactory(index, newFactory):
+        ButtonFactory.factories.put[index] = newFactory
+
     addFactory = staticmethod(addFactory)
+
     # A Template Method:
-    def createButton(id):
-        if not ButtonFactory.factories.has_key(id):
-            ButtonFactory.factories[id] = eval(id + '.Factory()')
-        return ShapeFactory.factories[id].create()
+    #* 0: ButtonObjectClassic.Factory
+    #* 1: ButtonObjectCenter.Factory
+    #* 2: ButtonObjectService.Factory
+    #* 3: ButtonObjectEmployee.Factory
+    #* 4: ButtonObjectExpense.Factory
+    def createButton(index):
+        if not ButtonFactory.factories.has_key(index):
+            ButtonFactory.factories[index] = eval(index + '.Factory()')
+        return ShapeFactory.factories[index].create()
+
     createButton = staticmethod(createButton)
 
 #------------------------------------------------------------------------------------------------------------------------
@@ -28,7 +50,8 @@ class ButtonObjectGeneral(Button):
     #  @brief Constructor of the class ButtonObjectGeneral.
     #  @param GenObject The General Object.
     #
-    def __init__(self, genObject):
+    def __init__(self, text, genObject):
+        super(ButtonObjectGeneral, self).__init__(text)
         self.a_object = genObject
 
 #------------------------------------------------------------------------------------------------------------------------
@@ -36,14 +59,13 @@ class ButtonObjectGeneral(Button):
 #  @brief Class of the object ButtonObjectGeneral.
 #  @sa ObjectGeneral
 #
-class ButtonObjectClassic(Button):
+class ButtonObjectClassic(ButtonObjectGeneral):
     ## @fn  __init__(self, GenObject)
     #  @brief Constructor of the class ButtonObjectGeneral.
     #  @param GenObject The General Object.
     #
     def __init__(self, classicObject):
-        super(ButtonObjectGeneral, self).__init__(classicObject.a_name)
-        ButtonClassic.__init__(self, classicObject)
+        super(ButtonObjectClassic, self).__init__(classicObject.a_name, classicObject)
 
     class Factory:
         def create(self, objct)): return self.__init__(self, objct)
@@ -59,8 +81,7 @@ class ButtonObjectCenter(ButtonObjectGeneral):
     #  @param center The center object.
     #
     def __init__(self, center):
-        super(ButtonObjectCenter, self).__init__(center.a_location.a_name+ +center.a_service.a_name+ +center.a_description)
-        ButtonClassic.__init__(self, center)
+        super(ButtonObjectCenter, self).__init__(center.a_location.a_name+ +center.a_service.a_name+ +center.a_description, center)
 
     class Factory:
         def create(self, objct)): return self.__init__(self, objct)
@@ -76,8 +97,7 @@ class ButtonObjectService(ButtonObjectGeneral):
     #  @param service The service object.
     #
     def __init__(self, service):
-        super(ButtonObjectCenter, self).__init__(service.a_location.a_name+ +service.a_description)
-        ButtonClassic.__init__(self, service)
+        super(ButtonObjectCenter, self).__init__(service.a_location.a_name+ +service.a_description, service)
 
     class Factory:
         def create(self, objct)): return self.__init__(self, objct)
@@ -93,8 +113,7 @@ class ButtonObjectEmployee(ButtonObjectGeneral):
     #  @param employee The service employee.
     #
     def __init__(self, employee):
-        super(ButtonObjectCenter, self).__init__(employee.a_name+ +employee.a_surname)
-        ButtonClassic.__init__(self, employee)
+        super(ButtonObjectCenter, self).__init__(employee.a_name+ +employee.a_surname, employee)
 
     class Factory:
         def create(self, objct)): return self.__init__(self, objct)
@@ -110,8 +129,7 @@ class ButtonObjectExpense(ButtonObjectGeneral):
     #  @param expense The service expense.
     #
     def __init__(self, expense):
-        super(ButtonObjectCenter, self).__init__(expense.a_price+ +expense.a_comment)
-        ButtonClassic.__init__(self, expense)
+        super(ButtonObjectCenter, self).__init__(expense.a_price+ +expense.a_comment, expense)
 
     class Factory:
         def create(self, objct)): return self.__init__(self, objct)

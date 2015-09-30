@@ -11,7 +11,7 @@ import config.settings as setts
 class Menu_Deroulant(Button):
     id_object= StringProperty()
     name_object= StringProperty()
-    
+
     def MenuDeroulant(self):
         print(setts.Mode)
         liste = self.get_object_list()

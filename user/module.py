@@ -28,6 +28,3 @@ class ListModuleFromFetch(list):
                 temp_module = Module(str(row[0]),[])
                 temp_module.list_outils.append(Outil(str(row[1])))
                 self.append(temp_module)
-
-
-

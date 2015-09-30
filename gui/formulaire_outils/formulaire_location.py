@@ -2,6 +2,7 @@
 from kivy.uix.relativelayout import RelativeLayout
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.listview import ListItemButton
+from database.logical_objects.buttonobject import *
 import pymysql
 from kivy.properties import ObjectProperty, StringProperty
 
@@ -37,6 +38,15 @@ class Formulaire_Location(RelativeLayout):
         self.new_location_box.text = ""
         self.location_listbox.location_listview.adapter.data = self.location_listbox.get_location_list()
 
+    def getDropDownLegalEntity(Menu_Deroulant):
+        db = MyDB()
+        data_ent_jur = db.get_all_ent_jur()
+        for ent_jur in data_ent_jur:
+            button = ButtonFactory.createButton(0)
+            listButtonLegEnt.append(button)
+        return MascDropDownButton(listButtonLegEnt)
+
+
 #Class of the Location List Items
 class Location_List_Item(BoxLayout, ListItemButton):
     id_location = StringProperty()
@@ -63,9 +73,3 @@ class Location_List(BoxLayout):
         return data_location
 
 #Class of a list of Ent Jur trigered by clickiing on a button
-class Menu_Deroulant_Ent_Jur(Menu_Deroulant):
-
-    def get_object_list(self):
-        db = MyDB()
-        data_ent_jur = db.get_all_ent_jur()
-        return data_ent_jur
