@@ -52,7 +52,7 @@ class MascaretHomeScreen(ScreenManager):
             db.commit()
         except:
             db.rollback()
-            
+
         modules_data = db.db_fetchall()
 
         return modules_data
@@ -60,6 +60,7 @@ class MascaretHomeScreen(ScreenManager):
     def create_modules_and_tools(self, modules_data):
 
         list_modules = ListModuleFromFetch(modules_data)
+        print(list_modules)
 
         # #On va chercher les infos
         # for row in modules_data:

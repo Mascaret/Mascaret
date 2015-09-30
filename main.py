@@ -12,19 +12,15 @@ from database.db import MyDB
 
 #root
 class MascaretRoot(FloatLayout):
-
     def __init__(self):
         super(MascaretRoot, self).__init__()
         self.mascaretloginscreen = MascaretLogScreen()
         self.add_widget(self.mascaretloginscreen)
-        db = MyDB()
 
     def show_bigscreen(self):
         self.clear_widgets()
         self.mascarethomescreen = MascaretHomeScreen()
         self.add_widget(self.mascarethomescreen)
-
-
 
 #Call of the login screen
 class MascaretLogScreen(MascaretLoginScreen):

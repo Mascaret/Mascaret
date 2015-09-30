@@ -36,6 +36,7 @@ class MyDB(metaclass=Singleton):
         self.a_listUsers = []
         self.a_listwbsCA = []
         self.a_listWBSElements = []
+        print("initialisation de la db")
 
     def query(self, query, params):
         self._db_cur.execute(query, params)
@@ -45,6 +46,7 @@ class MyDB(metaclass=Singleton):
 
     def __del__(self):
         self._db_connection.close()
+        print("Destruction de la db")
 
     def commit(self):
         self._db_connection.commit()
